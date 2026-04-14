@@ -20,6 +20,7 @@ public class LookAround : State
         WalkArea.SetActive(true);
         allCheckpointsFilled = false;
         SpawnCheckpointsAroundPlayer();
+        Debug.Log("State 2");
 
     }
     public override void Execute()
