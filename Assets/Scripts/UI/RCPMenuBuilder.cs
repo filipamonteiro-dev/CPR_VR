@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.XR.Interaction.Toolkit.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace VRCPR.UI
 {
@@ -47,7 +48,7 @@ namespace VRCPR.UI
             menuCanvas.worldCamera = xrCamera;
 
             // Necessário para interação com controladores XR
-            //menuRoot.AddComponent<TrackedDeviceGraphicRaycaster>();
+            menuRoot.AddComponent<TrackedDeviceGraphicRaycaster>(); // <-- Descomentado para o VR funcionar no Menu
             menuRoot.AddComponent<CanvasScaler>();
             menuRoot.AddComponent<GraphicRaycaster>();
 
@@ -58,73 +59,36 @@ namespace VRCPR.UI
             // Fundo geral preto do Canvas (o "Space" à volta do menu)
             AddImage(menuRoot, new Color(0, 0, 0, 1), Vector2.zero, new Vector2(1195, 682));
 
-            // --- DECORAÇÕES E ANOTAÇÕES FLUTUANTES ---
-            BuildFloatingAnnotations();
-
             // --- HEADER ---
             BuildHeader();
 
             // --- BOTÕES ---
-            string[] labels = { "INICIAR TREINO", "MODO TESTE", "TUTORIAL", "SAIR" };
-            string[] subtitles = {
-                "simulação guiada · modo iniciante",
-                "avaliação de desempenho · cronometrado",
-                "instrução passo a passo · aprender",
-                "fechar aplicação"
-            };
-            bool[] isAccent = { true, false, false, false };
-            bool[] isDanger = { false, false, false, true };
+            // Verifica se o tutorial foi completado
+            bool tutorialCompleted = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
 
-            // Ações de cada botão
-            System.Action[] actions = {
-                () => SceneManager.LoadScene("TrainingScene"), // Substitui com o nome exato da tua cena de Treino
-                () => SceneManager.LoadScene("TestModeScene"), // Modo Teste
-                () => SceneManager.LoadScene("TutorialScene"), // Tutorial
-                () => QuitApplication()                        // Sair
-            };
+            // Treino e Teste dependem do tutorial. Se o tutorial não for concluído, estão bloqueados.
+            bool lockTraining = !tutorialCompleted;
+            bool lockTest = !tutorialCompleted; 
 
-            float startY = 120f;
-            for (int i = 0; i < labels.Length; i++)
-            {
-                BuildButton(
-                    label: labels[i],
-                    subtitle: subtitles[i],
-                    posY: startY - i * 110f,
-                    isAccent: isAccent[i],
-                    isDanger: isDanger[i],
-                    onClick: actions[i] // Passamos a ação correspondente
-                );
-            }
+            // Tutorial é sempre desbloqueado
+            BuildButton("TUTORIAL", "APRENDA OS PASSOS BÁSICOS", 80, true, false, false, () => SceneManager.LoadScene("TutorialScene"));
+            
+            // Treino
+            System.Action trainingAction = lockTraining ? (System.Action)null : () => SceneManager.LoadScene("TrainingScene");
+            BuildButton("TREINO", "PRATIQUE COM ASSISTÊNCIA", 0, false, false, lockTraining, trainingAction);
+            
+            // Teste
+            System.Action testAction = lockTest ? (System.Action)null : () => SceneManager.LoadScene("TestModeScene");
+            BuildButton("TESTE", "AVALIAÇÃO SEM AUXÍLIO", -80, false, false, lockTest, testAction);
+            
+            // Sair
+            BuildButton("SAIR DO SISTEMA", "ENCERRAR SIMULAÇÃO", -160, false, true, false, QuitApplication);
 
             // --- NOTA DE RODAPÉ ---
             var footer = CreateTMPText(menuRoot, "USE O GATILHO DO CONTROLE PARA SELECIONAR",
                 new Vector2(0, -320), new Vector2(400, 20), 10f, new Color(1f, 1f, 1f, 0.15f));
             footer.alignment = TextAlignmentOptions.Center;
             footer.characterSpacing = 3f;
-        }
-
-        void BuildFloatingAnnotations()
-        {
-            // Top Right Version
-            var version = CreateTMPText(menuRoot, "VR-RCP // WIREFRAME v0.1",
-                new Vector2(350, 380), new Vector2(200, 20), 10f, new Color(1f, 1f, 1f, 0.18f));
-            version.alignment = TextAlignmentOptions.Right;
-            version.characterSpacing = 3f;
-
-            // Left Annotation (Rodado)
-            var leftNote = CreateTMPText(menuRoot, "PAINEL DE NAVEGAÇÃO PRINCIPAL",
-                new Vector2(-350, 0), new Vector2(400, 20), 10f, new Color(1f, 1f, 1f, 0.12f));
-            leftNote.alignment = TextAlignmentOptions.Center;
-            leftNote.characterSpacing = 5f;
-            leftNote.rectTransform.localEulerAngles = new Vector3(0, 0, 90);
-
-            // Right Annotation Tree
-            string treeTxt = "┌── LARGURA DO PAINEL: 440px\n├── BOTÕES: 4\n├── FONTE: SPACE MONO\n└── PROFUNDIDADE: Z+0,5m";
-            var rightTree = CreateTMPText(menuRoot, treeTxt,
-                new Vector2(380, 50), new Vector2(250, 100), 9f, new Color(1f, 1f, 1f, 0.14f));
-            rightTree.alignment = TextAlignmentOptions.Left;
-            rightTree.characterSpacing = 2f;
-            rightTree.lineSpacing = 15f;
         }
 
         void BuildHeader()
@@ -178,7 +142,7 @@ namespace VRCPR.UI
             AddImage(divRoot, new Color(1f, 1f, 1f, 0.12f), new Vector2(40, 0), new Vector2(64, 1)); // Linha Dir
         }
 
-        void BuildButton(string label, string subtitle, float posY, bool isAccent, bool isDanger, System.Action onClick)
+        void BuildButton(string label, string subtitle, float posY, bool isAccent, bool isDanger, bool isLocked, System.Action onClick)
         {
             Color currentBorderColor = isDanger ? dangerBorderColor : (isAccent ? accentBorderColor : borderColor);
             Color hoverColor = isDanger ? new Color(1f, 0.31f, 0.31f, 0.08f) : (isAccent ? new Color(1f, 1f, 1f, 0.08f) : new Color(1f, 1f, 1f, 0.04f));
@@ -187,28 +151,40 @@ namespace VRCPR.UI
             var btnObj = new GameObject($"Button_{label}");
             btnObj.transform.SetParent(menuRoot.transform, false);
 
+            float btnWidth = 440f;
+            float btnHeight = 70f;     // <-- Altura reduzida (era 95)
+            float halfHeight = 35f;    // btnHeight / 2
+
             var rt = btnObj.AddComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(0, posY);
-            rt.sizeDelta = new Vector2(440, 95);
+            rt.sizeDelta = new Vector2(btnWidth, btnHeight);
 
-            // Fundo base do botão e borda tracejada
-            var bgImg = AddImage(btnObj, Color.clear, Vector2.zero, new Vector2(440, 95));
-            var outline = bgImg.gameObject.AddComponent<Outline>();
+            // Hitbox invisível do botão (responsável por receber o Hover e Clique da Unity)
+            var bgHitbox = AddImage(btnObj, Color.clear, Vector2.zero, new Vector2(btnWidth, btnHeight));
+
+            // Borda contínua interna
+            // Definimos as margens um pouco menores para garantir que fica por dentro dos cantos (ex: -6px)
+            var innerBorder = AddImage(btnObj, Color.clear, Vector2.zero, new Vector2(btnWidth - 8f, btnHeight - 8f));
+            var outline = innerBorder.gameObject.AddComponent<Outline>();
             outline.effectColor = currentBorderColor;
-            outline.effectDistance = new Vector2(1, -1);
+            outline.effectDistance = new Vector2(1, -1); // Linha contínua
 
-            // Adicionando os cantos acentuados
-            AddCorner(btnObj, new Vector2(-220, 47.5f), new Vector2(8, 2), currentBorderColor, new Vector2(4, -1));
-            AddCorner(btnObj, new Vector2(-220, 47.5f), new Vector2(2, 8), currentBorderColor, new Vector2(1, -4));
-            AddCorner(btnObj, new Vector2(220, 47.5f), new Vector2(8, 2), currentBorderColor, new Vector2(-4, -1));
-            AddCorner(btnObj, new Vector2(220, 47.5f), new Vector2(2, 8), currentBorderColor, new Vector2(-1, -4));
-            AddCorner(btnObj, new Vector2(-220, -47.5f), new Vector2(8, 2), currentBorderColor, new Vector2(4, 1));
-            AddCorner(btnObj, new Vector2(-220, -47.5f), new Vector2(2, 8), currentBorderColor, new Vector2(1, 4));
-            AddCorner(btnObj, new Vector2(220, -47.5f), new Vector2(8, 2), currentBorderColor, new Vector2(-4, 1));
-            AddCorner(btnObj, new Vector2(220, -47.5f), new Vector2(2, 8), currentBorderColor, new Vector2(-1, 4));
+            // Adicionando os cantos acentuados usando as medidas do halfHeight
+            AddCorner(btnObj, new Vector2(-220, halfHeight), new Vector2(8, 2), currentBorderColor, new Vector2(4, -1));
+            AddCorner(btnObj, new Vector2(-220, halfHeight), new Vector2(2, 8), currentBorderColor, new Vector2(1, -4));
+            AddCorner(btnObj, new Vector2(220, halfHeight), new Vector2(8, 2), currentBorderColor, new Vector2(-4, -1));
+            AddCorner(btnObj, new Vector2(220, halfHeight), new Vector2(2, 8), currentBorderColor, new Vector2(-1, -4));
+            AddCorner(btnObj, new Vector2(-220, -halfHeight), new Vector2(8, 2), currentBorderColor, new Vector2(4, 1));
+            AddCorner(btnObj, new Vector2(-220, -halfHeight), new Vector2(2, 8), currentBorderColor, new Vector2(1, 4));
+            AddCorner(btnObj, new Vector2(220, -halfHeight), new Vector2(8, 2), currentBorderColor, new Vector2(-4, 1));
+            AddCorner(btnObj, new Vector2(220, -halfHeight), new Vector2(2, 8), currentBorderColor, new Vector2(-1, 4));
 
             // Botão Unity
             var btn = btnObj.AddComponent<Button>();
+            
+            // Passar o objeto que a Unity vai considerar como "Target Graphic" (A Hitbox)
+            btn.targetGraphic = bgHitbox;
+
             var colors = btn.colors;
             colors.normalColor = Color.clear;
             colors.highlightedColor = hoverColor;
@@ -216,26 +192,56 @@ namespace VRCPR.UI
             colors.selectedColor = hoverColor;
             btn.colors = colors;
 
+            // ----> AQUI ADICIONAMOS A LÓGICA DE HOVER <----
+            if (!isLocked)
+            {
+                var trigger = btnObj.AddComponent<EventTrigger>();
+
+                // Aumentar no Hover (nota: aumentei a escala para 1.05f (5%) pois 0.1% é quase impercetível em VR)
+                var pointerEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+                pointerEnter.callback.AddListener((data) => { btnObj.transform.localScale = Vector3.one * 1.05f; });
+                trigger.triggers.Add(pointerEnter);
+
+                // Voltar ao normal quando sai do Hover
+                var pointerExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                pointerExit.callback.AddListener((data) => { btnObj.transform.localScale = Vector3.one; });
+                trigger.triggers.Add(pointerExit);
+            }
+
             // ----> AQUI CONECTAMOS O EVENTO DE CLIQUE AO BOTÃO <----
             if (onClick != null)
             {
                 btn.onClick.AddListener(() => onClick.Invoke());
             }
 
-            // Labels e resto do botão...
+            // Labels e resto do botão... (Ajustei os Y dos textos pela altura nova)
             Color labelColor = isDanger ? new Color(1f, 0.39f, 0.39f, 0.8f) : (isAccent ? highlightTextColor : new Color(1f, 1f, 1f, 0.65f));
             var lbl = CreateTMPText(btnObj, label,
-                new Vector2(-30, 10), new Vector2(300, 30), 14f, labelColor);
+                new Vector2(-30, 8), new Vector2(300, 30), 14f, labelColor); // PosY antes 10, agora 8
             lbl.characterSpacing = 3f;
 
             CreateTMPText(btnObj, subtitle,
-                new Vector2(-30, -14), new Vector2(320, 22), 10f, subTextColor);
+                new Vector2(-30, -12), new Vector2(320, 22), 10f, subTextColor); // PosY antes -14, agora -12
 
             Color selColor = isDanger ? selectTextDangerColor : selectTextAccentColor;
             var sel = CreateTMPText(btnObj, "[SELECIONAR]",
                 new Vector2(140, 0), new Vector2(130, 30), 10f, selColor);
             sel.alignment = TextAlignmentOptions.Right;
             sel.characterSpacing = 2f;
+
+            // Texto de bloqueado
+            if (isLocked)
+            {
+                CreateTMPText(btnObj, "BLOQUEADO",
+                    new Vector2(0, -12), new Vector2(400, 22), 10f, new Color(1f, 0.2f, 0.2f, 0.85f))
+                    .alignment = TextAlignmentOptions.Center;
+            }
+
+            // Escurecer o botão se estiver bloqueado
+            if (isLocked)
+            {
+                AddImage(btnObj, new Color(0f, 0f, 0f, 0.65f), Vector2.zero, new Vector2(btnWidth, btnHeight));
+            }
         }
 
         // ── Helpers ──────────────────────────────────────────────────
