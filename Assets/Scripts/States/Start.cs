@@ -62,6 +62,9 @@ public class Start : State
     {
         base.Exit();
 
+                 AnchorEnterNotifier.AnyAnchorEntered -= OnAnyAnchorEntered;
+
+
 
     }
 
