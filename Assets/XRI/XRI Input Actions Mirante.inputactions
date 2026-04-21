@@ -3668,6 +3668,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Keyboard",
+            "id": "594f402b-ae29-4794-9304-be92b2d0f9df",
+            "actions": [
+                {
+                    "name": "StartTut",
+                    "type": "Button",
+                    "id": "2d80fa28-c06a-49e2-979d-e4df6ac7aac8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "401f7ae0-f662-479b-a67e-1a6251b30cf7",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartTut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
