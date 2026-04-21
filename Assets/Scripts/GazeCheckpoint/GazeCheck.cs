@@ -85,4 +85,24 @@ public class GazeCheck : MonoBehaviour
     {
         IsFilled = true;
     }
+
+
+    private void OnDrawGizmos()
+    {
+        if (playerCamera == null)
+        {
+            playerCamera = Camera.main;
+            if (playerCamera == null)
+            {
+                return;
+            }
+        }
+
+        Vector3 origin = playerCamera.transform.position;
+        Vector3 direction = playerCamera.transform.forward;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(origin, direction * maxDistance);
+    }
 }
+
