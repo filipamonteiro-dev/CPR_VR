@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f6f19eb81b1c94882b73b7b093bd33, type: 3}
+  m_Name: Perguntas
+  m_EditorClassIdentifier: Assembly-CSharp::CallQuestionBank
+  questions:
+  - questionId: 
+    prompt: "Daqui fala o 112, qual \xE9 a sua emerg\xEAncia?"
+    options:
+    - O bro morreu
+    - Sim bom dia era para encomendar uma Pizza
+    - "Ol\xE1 estou com uma pessoa ao meu lado que n\xE3o est\xE1 a responder a est\xEDmulos"
+    - "Pe\xE7o desculpa, pensei que estava a ligar para a Gl\xF3ria da SIC"
+    correctOptionIndex: 2
+    criticalQuestion: 0
