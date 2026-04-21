@@ -7,7 +7,6 @@ public class GazeCheck : MonoBehaviour
     [SerializeField] private float maxDistance = 20f;
     [SerializeField] private Image radialImage;
     [SerializeField] private float fillDuration = 3f;
-    [SerializeField] private float drainDuration = 10f;
 
     private BoxCollider targetCollider;
     private bool hasTriggered;
@@ -71,13 +70,7 @@ public class GazeCheck : MonoBehaviour
         }
         else
         {
-            radialImage.fillAmount -= Time.deltaTime / drainDuration;
-            radialImage.fillAmount = Mathf.Clamp01(radialImage.fillAmount);
-
-            if (radialImage.fillAmount <= 0f)
-            {
-                hasTriggered = false;
-            }
+            // No drain when looking away.
         }
     }
 

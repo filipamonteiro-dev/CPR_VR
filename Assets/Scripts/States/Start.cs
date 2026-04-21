@@ -53,8 +53,8 @@ public class Start : State
 
     public override bool IsFinished()
     {
-        if(hasTeleportedToSpot == true)
-            Debug.Log("Saiu do Estado 1");
+      
+          
         return hasTeleportedToSpot;
     }
 
