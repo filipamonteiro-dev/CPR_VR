@@ -49,12 +49,12 @@ public class Start : State
 
     public override void ForceFinished()
     {
-        hasTeleportedToSpot = true;
     }
 
     public override bool IsFinished()
     {
-        Debug.Log("Saiu do estado 1");
+      
+          
         return hasTeleportedToSpot;
     }
 
