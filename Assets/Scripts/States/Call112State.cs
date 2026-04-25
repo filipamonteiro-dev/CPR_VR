@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class Call112State : State
 {
+    [Header("Dialing")]
+    [SerializeField] private PhoneDialer phoneDialer;
     [SerializeField] private ControllerButtonGate callButtonGate;
+
+    [Header("Quiz")]
     [SerializeField] private Call112QuizController quizController;
     [SerializeField] private bool startQuizImmediately;
 
@@ -18,6 +22,12 @@ public class Call112State : State
         {
             callButtonGate.ResetGate();
             callButtonGate.CallRequested += OnCallRequested;
+        }
+
+        if (phoneDialer != null)
+        {
+            phoneDialer.ResetDialer();
+            phoneDialer.EmergencyNumberDialed += OnEmergencyNumberDialed;
         }
 
         if (quizController != null)
@@ -46,6 +56,9 @@ public class Call112State : State
         if (callButtonGate != null)
             callButtonGate.CallRequested -= OnCallRequested;
 
+        if (phoneDialer != null)
+            phoneDialer.EmergencyNumberDialed -= OnEmergencyNumberDialed;
+
         if (quizController != null)
             quizController.QuizCompleted -= OnQuizCompleted;
 
@@ -53,6 +66,11 @@ public class Call112State : State
     }
 
     private void OnCallRequested()
+    {
+        TryStartQuiz();
+    }
+
+    private void OnEmergencyNumberDialed(PhoneDialer dialer)
     {
         TryStartQuiz();
     }
