@@ -548,11 +548,6 @@ CharacterController:
   m_CorrespondingSourceObject: {fileID: 5892713944591162129, guid: 672b090f58450674c9f879924787d9a9, type: 3}
   m_PrefabInstance: {fileID: 648482769}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &41456051 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5721643146623385276, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
-  m_PrefabInstance: {fileID: 1161608214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &67807981
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,9 +648,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 1
   digit: 0
-  interactable: {fileID: 81515418}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 81515415}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -755,6 +750,33 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AutoFindParentInteractableInHierarchy: 0
   m_ParentInteractableObject: {fileID: 0}
+--- !u!54 &81515421
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81515414}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &97433693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7690430755383640741, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
@@ -780,9 +802,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 2
   digit: 0
-  interactable: {fileID: 97433696}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 97433694}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -882,6 +904,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005865746, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: 0.0076636192, y: 0.00018000629, z: 0.000026471098}
+--- !u!54 &97433700
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97433693}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &141078382 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -636755313264080109, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
@@ -907,9 +956,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 3
-  interactable: {fileID: 141078385}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 141078383}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -1009,6 +1058,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657457, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: -0.0076568797, y: 0.00018000629, z: 0.020680252}
+--- !u!54 &141078389
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141078382}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &225446426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,9 +1163,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 9
-  interactable: {fileID: 232705117}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 232705115}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -1189,6 +1265,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657457, y: 0.0020535144, z: 0.0045897276}
   m_Center: {x: -0.0076568797, y: 0.00018000629, z: 0.0069110654}
+--- !u!54 &232705121
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232705114}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &241112520 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5272979483681852572, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
@@ -1214,9 +1317,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 7
-  interactable: {fileID: 241112523}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 241112521}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -1316,6 +1419,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005865746, y: 0.0020535144, z: 0.0045897276}
   m_Center: {x: 0.0076636192, y: 0.00018000629, z: 0.0069110654}
+--- !u!54 &241112527
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241112520}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &262443753
 GameObject:
   m_ObjectHideFlags: 0
@@ -2397,9 +2527,48 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.745
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.072
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515053501184697047, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533664404543990776, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_Radius
+      value: 0.015
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5361673143678707550, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 903161005}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672b090f58450674c9f879924787d9a9, type: 3}
 --- !u!1 &650327969
@@ -2563,7 +2732,7 @@ MonoBehaviour:
   - {fileID: 13622808}
   referenceSpace: {fileID: 0}
   requireAllGrabPoints: 0
-  shakeAxis: 1
+  shakeAxis: 0
   minFrameDisplacement: 0.005
   requiredDirectionChanges: 5
   requiredActiveTime: 0.9
@@ -2913,9 +3082,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 6
-  interactable: {fileID: 865026257}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 865026255}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -3015,6 +3184,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657457, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: -0.0076568797, y: 0.00018000629, z: 0.013795659}
+--- !u!54 &865026261
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865026254}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &876628532 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1701895539522901502, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
@@ -3040,9 +3236,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 8
-  interactable: {fileID: 876628535}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 876628533}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -3142,6 +3338,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657452, y: 0.0020535144, z: 0.0045897276}
   m_Center: {x: 0.0000043098116, y: 0.00018000629, z: 0.0069110654}
+--- !u!54 &876628539
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876628532}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &884046237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
@@ -3268,6 +3491,37 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &903161004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903161005}
+  m_Layer: 0
+  m_Name: PhoneAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903161005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903161004}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.002, y: 1.209, z: 0.587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1032567849}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &957028585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1918406353201951979, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
@@ -3303,12 +3557,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11ac9f302dd64543b5cb8c1579bebaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloatingToolPresenter
-  toolRoot: {fileID: 41456051}
+  toolRoot: {fileID: 962599144}
   holsterAnchor: {fileID: 687854494}
-  floatingAnchor: {fileID: 0}
+  floatingAnchor: {fileID: 903161005}
   headTransform: {fileID: 1516716240}
-  floatingLocalOffset: {x: 0, y: -0.12, z: 0.45}
-  floatingEulerOffset: {x: 0, y: 0, z: 0}
+  floatingLocalOffset: {x: 0, y: 0, z: 0}
+  floatingEulerOffset: {x: -90, y: 0, z: 0}
   transitionDuration: 0.2
   followHeadWhilePresented: 0
   followPositionLerpSpeed: 10
@@ -3358,7 +3612,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962599141}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.000000014901159, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.57589, y: 5.88, z: -8.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3503,6 +3757,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1032567849 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5361673143678707550, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+  m_PrefabInstance: {fileID: 648482769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1072015706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3732,9 +3991,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 2
-  interactable: {fileID: 1101531040}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 1101531038}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -3834,6 +4093,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657452, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: 0.0000043098116, y: 0.00018000629, z: 0.020680252}
+--- !u!54 &1101531044
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101531037}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1116451956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4402405717547116215, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
@@ -4025,6 +4311,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -5748138086623603336, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 81515416}
+    - targetCorrespondingSourceObject: {fileID: -5748138086623603336, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 81515421}
     - targetCorrespondingSourceObject: {fileID: -7690430755383640741, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 97433697}
@@ -4034,6 +4323,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7690430755383640741, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 97433695}
+    - targetCorrespondingSourceObject: {fileID: -7690430755383640741, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 97433700}
     - targetCorrespondingSourceObject: {fileID: 2075810107018500121, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1209040370}
@@ -4043,6 +4335,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2075810107018500121, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1209040368}
+    - targetCorrespondingSourceObject: {fileID: 2075810107018500121, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1209040373}
     - targetCorrespondingSourceObject: {fileID: 8860821652823873765, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1322798723}
@@ -4052,6 +4347,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8860821652823873765, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1322798721}
+    - targetCorrespondingSourceObject: {fileID: 8860821652823873765, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1322798726}
     - targetCorrespondingSourceObject: {fileID: -6715176634341952214, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1101531041}
@@ -4061,6 +4359,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6715176634341952214, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1101531039}
+    - targetCorrespondingSourceObject: {fileID: -6715176634341952214, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1101531044}
     - targetCorrespondingSourceObject: {fileID: -636755313264080109, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 141078386}
@@ -4070,6 +4371,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -636755313264080109, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 141078384}
+    - targetCorrespondingSourceObject: {fileID: -636755313264080109, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 141078389}
     - targetCorrespondingSourceObject: {fileID: 7461927267984671962, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2129597490}
@@ -4079,6 +4383,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7461927267984671962, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2129597488}
+    - targetCorrespondingSourceObject: {fileID: 7461927267984671962, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2129597493}
     - targetCorrespondingSourceObject: {fileID: 8094218037840761, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1212737277}
@@ -4088,6 +4395,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8094218037840761, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1212737275}
+    - targetCorrespondingSourceObject: {fileID: 8094218037840761, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1212737280}
     - targetCorrespondingSourceObject: {fileID: 1706042829348054914, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 865026258}
@@ -4097,6 +4407,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1706042829348054914, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 865026256}
+    - targetCorrespondingSourceObject: {fileID: 1706042829348054914, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 865026261}
     - targetCorrespondingSourceObject: {fileID: 5272979483681852572, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 241112524}
@@ -4106,6 +4419,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5272979483681852572, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 241112522}
+    - targetCorrespondingSourceObject: {fileID: 5272979483681852572, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 241112527}
     - targetCorrespondingSourceObject: {fileID: -1701895539522901502, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 876628536}
@@ -4115,6 +4431,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1701895539522901502, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 876628534}
+    - targetCorrespondingSourceObject: {fileID: -1701895539522901502, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 876628539}
     - targetCorrespondingSourceObject: {fileID: 5676256593161467908, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 232705118}
@@ -4124,6 +4443,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5676256593161467908, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 232705116}
+    - targetCorrespondingSourceObject: {fileID: 5676256593161467908, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 232705121}
   m_SourcePrefab: {fileID: 100100000, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
 --- !u!1 &1209040366 stripped
 GameObject:
@@ -4150,9 +4472,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 0
-  interactable: {fileID: 1209040370}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 1209040367}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -4252,6 +4574,33 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AutoFindParentInteractableInHierarchy: 0
   m_ParentInteractableObject: {fileID: 0}
+--- !u!54 &1209040373
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209040366}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1212737273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8094218037840761, guid: 2d9a89edb8640c3469ce79036fc71ec2, type: 3}
@@ -4277,9 +4626,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 5
-  interactable: {fileID: 1212737276}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 1212737274}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -4379,6 +4728,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0058657452, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: 0.0000043098116, y: 0.00018000629, z: 0.013795659}
+--- !u!54 &1212737280
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212737273}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1217128010
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5176,9 +5552,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 1
-  interactable: {fileID: 1322798723}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 1322798720}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -5278,6 +5654,33 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AutoFindParentInteractableInHierarchy: 0
   m_ParentInteractableObject: {fileID: 0}
+--- !u!54 &1322798726
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322798719}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1330109251
 GameObject:
   m_ObjectHideFlags: 0
@@ -7464,9 +7867,9 @@ MonoBehaviour:
   dialer: {fileID: 962599143}
   buttonType: 0
   digit: 4
-  interactable: {fileID: 2129597489}
+  interactable: {fileID: 0}
   buttonVisual: {fileID: 2129597487}
-  localPressDirection: {x: 0, y: -1, z: 0}
+  localPressDirection: {x: 0, y: 0, z: -1}
   pressDepth: 0.0035
   pressDuration: 0.045
   releaseDuration: 0.06
@@ -7566,6 +7969,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005865746, y: 0.0020535144, z: 0.004589729}
   m_Center: {x: 0.0076636192, y: 0.00018000629, z: 0.013795659}
+--- !u!54 &2129597493
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129597486}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -43,20 +43,10 @@ public class PhoneDialButton : MonoBehaviour
         initialLocalPosition = buttonVisual.localPosition;
     }
 
-    private void OnEnable()
-    {
-        if (interactable == null)
-            return;
-
-        interactable.selectEntered.AddListener(OnSelectEntered);
-    }
-
     private void OnDisable()
     {
-        if (interactable == null)
-            return;
-
-        interactable.selectEntered.RemoveListener(OnSelectEntered);
+        if (interactable != null)
+            interactable.hoverEntered.RemoveListener(OnHoverEntered);
 
         if (pressRoutine != null)
             StopCoroutine(pressRoutine);
@@ -64,8 +54,22 @@ public class PhoneDialButton : MonoBehaviour
         buttonVisual.localPosition = initialLocalPosition;
     }
 
-    private void OnSelectEntered(SelectEnterEventArgs args)
+    private void OnEnable()
     {
+        if (interactable != null)
+            interactable.hoverEntered.AddListener(OnHoverEntered);
+    }
+
+    private void OnHoverEntered(HoverEnterEventArgs args)
+    {
+        TryTrigger();
+    }
+
+    private void TryTrigger()
+    {
+        if (pressRoutine != null)
+            return;
+
         TriggerButton();
     }
 

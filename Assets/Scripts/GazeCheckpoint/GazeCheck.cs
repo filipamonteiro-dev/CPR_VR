@@ -8,14 +8,13 @@ public class GazeCheck : MonoBehaviour
     [SerializeField] private Image radialImage;
     [SerializeField] private float fillDuration = 3f;
 
-    private BoxCollider targetCollider;
+   [SerializeField] private BoxCollider targetCollider;
     private bool hasTriggered;
 
     public bool IsFilled { get; private set; }
 
     private void Awake()
     {
-        targetCollider = GetComponent<BoxCollider>();
 
         if (radialImage != null)
         {
@@ -68,10 +67,7 @@ public class GazeCheck : MonoBehaviour
                 OnFill();
             }
         }
-        else
-        {
-            // No drain when looking away.
-        }
+       
     }
 
     private void OnFill()
