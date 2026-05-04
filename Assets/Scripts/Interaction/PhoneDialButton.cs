@@ -21,6 +21,7 @@ public class PhoneDialButton : MonoBehaviour
 
     [Header("Interaction")]
     [SerializeField] private XRSimpleInteractable interactable;
+    [SerializeField] private bool enableDebugLogs;
 
     [Header("Visual Press")]
     [SerializeField] private Transform buttonVisual;
@@ -46,7 +47,9 @@ public class PhoneDialButton : MonoBehaviour
     private void OnDisable()
     {
         if (interactable != null)
-            interactable.hoverEntered.RemoveListener(OnHoverEntered);
+            interactable.selectEntered.RemoveListener(OnSelectEntered);
+        else if (enableDebugLogs)
+            Debug.LogWarning("PhoneDialButton missing interactable on disable.", this);
 
         if (pressRoutine != null)
             StopCoroutine(pressRoutine);
@@ -57,11 +60,15 @@ public class PhoneDialButton : MonoBehaviour
     private void OnEnable()
     {
         if (interactable != null)
-            interactable.hoverEntered.AddListener(OnHoverEntered);
+            interactable.selectEntered.AddListener(OnSelectEntered);
+        else if (enableDebugLogs)
+            Debug.LogWarning("PhoneDialButton missing interactable on enable.", this);
     }
 
-    private void OnHoverEntered(HoverEnterEventArgs args)
+    private void OnSelectEntered(SelectEnterEventArgs args)
     {
+        if (enableDebugLogs)
+            Debug.Log($"PhoneDialButton select entered on {name}.", this);
         TryTrigger();
     }
 
@@ -77,20 +84,32 @@ public class PhoneDialButton : MonoBehaviour
     public void TriggerButton()
     {
         if (dialer == null)
+        {
+            if (enableDebugLogs)
+                Debug.LogWarning($"PhoneDialButton '{name}' has no dialer reference.", this);
             return;
+        }
 
         switch (buttonType)
         {
             case ButtonType.Digit:
+                if (enableDebugLogs)
+                    Debug.Log($"PhoneDialButton digit {digit} pressed.", this);
                 dialer.InputDigit(digit);
                 break;
             case ButtonType.Call:
+                if (enableDebugLogs)
+                    Debug.Log("PhoneDialButton call pressed.", this);
                 dialer.PressCall();
                 break;
             case ButtonType.Clear:
+                if (enableDebugLogs)
+                    Debug.Log("PhoneDialButton clear pressed.", this);
                 dialer.PressClear();
                 break;
             case ButtonType.Backspace:
+                if (enableDebugLogs)
+                    Debug.Log("PhoneDialButton backspace pressed.", this);
                 dialer.PressBackspace();
                 break;
         }
@@ -101,7 +120,11 @@ public class PhoneDialButton : MonoBehaviour
     private void PlayPressAnimation()
     {
         if (buttonVisual == null)
+        {
+            if (enableDebugLogs)
+                Debug.LogWarning("PhoneDialButton missing button visual; cannot animate.", this);
             return;
+        }
 
         if (pressRoutine != null)
             StopCoroutine(pressRoutine);

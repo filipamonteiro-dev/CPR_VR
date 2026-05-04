@@ -24,6 +24,59 @@ public class MannequinResetter : MonoBehaviour
 
     private readonly List<BodyPose> _poses = new List<BodyPose>();
 
+    public void SetRagdollEnabled(bool enabled)
+    {
+        if (ragdollBodies == null || ragdollBodies.Length == 0)
+        {
+            ragdollBodies = GetComponentsInChildren<Rigidbody>();
+        }
+
+        if (_poses.Count == 0)
+        {
+            _poses.Clear();
+            foreach (var rb in ragdollBodies)
+            {
+                if (rb == null)
+                {
+                    continue;
+                }
+
+                _poses.Add(new BodyPose
+                {
+                    Transform = rb.transform,
+                    LocalPosition = rb.transform.localPosition,
+                    LocalRotation = rb.transform.localRotation,
+                    WasKinematic = rb.isKinematic
+                });
+            }
+        }
+
+        foreach (var pose in _poses)
+        {
+            if (pose.Transform == null)
+            {
+                continue;
+            }
+
+            var rb = pose.Transform.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                continue;
+            }
+
+            if (enabled)
+            {
+                rb.isKinematic = pose.WasKinematic;
+                continue;
+            }
+
+            rb.isKinematic = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.Sleep();
+        }
+    }
+
     private void Awake()
     {
         _rootStartPosition = transform.position;
