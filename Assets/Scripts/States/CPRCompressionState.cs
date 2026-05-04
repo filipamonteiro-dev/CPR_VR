@@ -8,6 +8,7 @@ public class CPRCompressionState : State
     [SerializeField] private CPRCompressionPulseDetector pulseDetector;
     [SerializeField] private CPRCompressionRhythmValidator rhythmValidator;
     [SerializeField] private CPRRhythmHudPresenter rhythmHudPresenter;
+    [SerializeField] private MannequinResetter mannequinResetter;
 
     private bool isFinished;
     private bool sessionStarted;
@@ -43,6 +44,9 @@ public class CPRCompressionState : State
             rhythmHudPresenter.SetVisible(true);
         }
 
+        if (mannequinResetter != null)
+            mannequinResetter.SetRagdollEnabled(false);
+
         TryStartSession();
     }
 
@@ -74,6 +78,9 @@ public class CPRCompressionState : State
 
         if (rhythmHudPresenter != null)
             rhythmHudPresenter.SetVisible(false);
+
+        if (mannequinResetter != null)
+            mannequinResetter.SetRagdollEnabled(true);
 
         base.Exit();
     }
