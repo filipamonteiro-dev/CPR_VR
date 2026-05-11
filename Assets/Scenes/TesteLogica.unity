@@ -1970,7 +1970,7 @@ GameObject:
   - component: {fileID: 363294842}
   - component: {fileID: 363294844}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas Call112
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7123,8 +7123,8 @@ MonoBehaviour:
   WalkArea: {fileID: 2076005322}
   playerTransform: {fileID: 0}
   radius: 2.5
-  rightAngle: 60
-  leftAngle: -60
+  rightAngle: 75
+  leftAngle: -75
 --- !u!1 &1447347340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1664083765829960058, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
