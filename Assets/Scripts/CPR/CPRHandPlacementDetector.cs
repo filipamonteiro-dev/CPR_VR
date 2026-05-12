@@ -16,7 +16,6 @@ public class CPRHandPlacementDetector : MonoBehaviour
 
     [Header("Tolerance")]
     [SerializeField] private float positionTolerance = 0.08f;
-    [SerializeField] private float rotationTolerance = 20f;
     [SerializeField] private float holdTimeToLock = 0.2f;
 
     [Header("Events")]
@@ -104,19 +103,11 @@ public class CPRHandPlacementDetector : MonoBehaviour
         return Vector3.Distance(sourceTransform.position, targetTransform.position);
     }
 
-    public float GetRotationError()
-    {
-        if (sourceTransform == null || targetTransform == null)
-            return float.PositiveInfinity;
-
-        return Quaternion.Angle(sourceTransform.rotation, targetTransform.rotation);
-    }
-
     private bool IsSourceWithinTolerance()
     {
         if (sourceTransform == null || targetTransform == null)
             return false;
 
-        return GetPositionError() <= positionTolerance && GetRotationError() <= rotationTolerance;
+        return GetPositionError() <= positionTolerance;
     }
 }
