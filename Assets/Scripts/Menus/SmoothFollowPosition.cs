@@ -17,7 +17,7 @@ using UnityEngine;
         [SerializeField] private bool followZ = true;
 
         [Tooltip("Special behaviour for tutorial purposes.")]
-        [SerializeField] private bool Tutorial = false;
+        [SerializeField] public bool Tutorial = false;
 
         [Tooltip("Extra Z offset to apply when Tutorial is enabled.")]
         [SerializeField] private float tutorialZOffset = 0.5f;

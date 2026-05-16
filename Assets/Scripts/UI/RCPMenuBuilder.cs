@@ -5,14 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
-namespace VRCPR.UI
-{
+
     public class RCPMenuBuilder : MonoBehaviour
     {
         [Header("Tipografia")]
         [Tooltip("Arraste o Font Asset gerado neste campo pelo Inspector.")]
         [SerializeField] private TMP_FontAsset menuCustomFont;
-
+     
         [Header("Configuração")]
         public Camera xrCamera;
 
@@ -43,6 +42,13 @@ namespace VRCPR.UI
             menuRoot = new GameObject("RCPMenu");
 
             // --- CANVAS ---
+
+            var followPos = menuRoot.AddComponent<SmoothFollowPosition>();
+            followPos.Tutorial = true;
+            var followRot = menuRoot.AddComponent<SmoothFollowRotation>();
+            followRot.Tutorial = true;
+            
+            
             menuCanvas = menuRoot.AddComponent<Canvas>();
             menuCanvas.renderMode = RenderMode.WorldSpace;
             menuCanvas.worldCamera = xrCamera;
@@ -304,4 +310,3 @@ namespace VRCPR.UI
 #endif
         }
     }
-}

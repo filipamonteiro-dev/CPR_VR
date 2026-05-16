@@ -25,7 +25,7 @@ using UnityEngine;
 
         
         [Tooltip("Special behaviour for tutorial purposes.")]
-        [SerializeField] private bool Tutorial = false;
+        [SerializeField] public bool Tutorial = false;
 
 
         // Internal state for SmoothDamp
