@@ -2029,6 +2029,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &289636117 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 416511142261111596, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
+  m_PrefabInstance: {fileID: 1217128010}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &375378739 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6454144021038524240, guid: 672b090f58450674c9f879924787d9a9, type: 3}
@@ -4395,6 +4400,7 @@ GameObject:
   - component: {fileID: 1116461420}
   - component: {fileID: 1116461419}
   - component: {fileID: 1116461424}
+  - component: {fileID: 1116461425}
   m_Layer: 0
   m_Name: CPR
   m_TagString: Untagged
@@ -4420,6 +4426,7 @@ MonoBehaviour:
   earlyWindowSeconds: 0.3
   lateWindowSeconds: 0.2
   perfectWindowSeconds: 0.08
+  showMissFeedback: 1
   onSequenceCompleted:
     m_PersistentCalls:
       m_Calls: []
@@ -4469,8 +4476,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CPRHandPlacementDetector
   sourceTransform: {fileID: 375378739}
   targetTransform: {fileID: 210592515}
-  positionTolerance: 0.08
+  enterTolerance: 0.08
+  exitTolerance: 0.12
   holdTimeToLock: 0.2
+  lostGraceSeconds: 0.2
   onAlignmentLocked:
     m_PersistentCalls:
       m_Calls: []
@@ -4499,6 +4508,19 @@ MonoBehaviour:
   rotationFollowSpeed: 18
   snapPositionDistance: 0.01
   snapRotationDegrees: 8
+  resetWhenUnaligned: 1
+  resetToSourceTransform: 1
+  resetPositionSpeed: 12
+  resetRotationSpeed: 16
+  useResetPoseOverride: 0
+  resetLocalPosition: {x: 0, y: 0, z: -0.05}
+  resetLocalEuler: {x: 0, y: 180, z: 0}
+  useResetWorldPoseOverride: 0
+  resetWorldPosition: {x: 0, y: 0, z: -0.05}
+  resetWorldEuler: {x: 0, y: 180, z: 0}
+  useFixedLocalReset: 1
+  fixedLocalPosition: {x: 0, y: 0, z: -0.05}
+  fixedLocalEuler: {x: 0, y: 180, z: 0}
 --- !u!4 &1116461423
 Transform:
   m_ObjectHideFlags: 0
@@ -4532,7 +4554,46 @@ MonoBehaviour:
   rhythmValidator: {fileID: 1116461419}
   rhythmHudPresenter: {fileID: 110793043}
   mannequinResetter: {fileID: 705374799}
-  startOnEnable: 0
+  startOnEnable: 1
+--- !u!114 &1116461425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116461418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b1b79967894a94891af04665a4d371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPRCompressionFeedback
+  pulseDetector: {fileID: 1116461420}
+  hapticInteractors: []
+  targetRigidbody: {fileID: 1447347342}
+  forcePoint: {fileID: 0}
+  forceDirectionSource: {fileID: 0}
+  autoFindHaptics: 0
+  useInputActionHaptics: 1
+  leftHapticAction: {fileID: -8785819595477538065, guid: 6a7b6aa44c2de8d4ea4c1800c55b6409, type: 3}
+  rightHapticAction: {fileID: -8222252007134549311, guid: 6a7b6aa44c2de8d4ea4c1800c55b6409, type: 3}
+  hapticsOnPress: 1
+  pressAmplitude: 0.6
+  pressDuration: 0.06
+  hapticsOnRelease: 0
+  releaseAmplitude: 0.2
+  releaseDuration: 0.04
+  applyForceOnPress: 1
+  pressForce: 30
+  applyContinuousForce: 1
+  continuousForce: 40
+  localForceDirection: {x: 0, y: -1, z: 0}
+  pressForceMode: 1
+  continuousForceMode: 0
+  driveChestTransform: 1
+  chestTransform: {fileID: 289636117}
+  chestLocalAxis: {x: 0, y: -1, z: 0}
+  maxChestOffset: 0.03
+  chestReturnSpeed: 14
 --- !u!64 &1118062147 stripped
 MeshCollider:
   m_CorrespondingSourceObject: {fileID: 2942319403217337480, guid: fad94b617f0540568dbf4c9c4011248c, type: 3}
@@ -6436,6 +6497,9 @@ MonoBehaviour:
   - {fileID: 1261592049}
   - {fileID: 1189899273}
   - {fileID: 1815985606}
+  uiFont: {fileID: 0}
+  buttonBgColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
+  buttonTextColor: {r: 1, g: 1, b: 1, a: 0.9}
   correctColor: {r: 0.24, g: 0.68, b: 0.28, a: 1}
   wrongColor: {r: 0.82, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &1361060708
@@ -7524,7 +7588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3449784919008568370, guid: fad94b617f0540568dbf4c9c4011248c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5852843801221537128, guid: fad94b617f0540568dbf4c9c4011248c, type: 3}
       propertyPath: requireTag
@@ -9010,7 +9074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2076005323
 MonoBehaviour:
   m_ObjectHideFlags: 0
