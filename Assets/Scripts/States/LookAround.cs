@@ -12,6 +12,7 @@ public class LookAround : State
 
     private readonly List<GameObject> spawnedCheckpoints = new List<GameObject>(2);
     private readonly List<GazeCheck> spawnedCheckpointChecks = new List<GazeCheck>(2);
+    private readonly HashSet<GazeCheck> completedCheckpointChecks = new HashSet<GazeCheck>();
     private bool allCheckpointsFilled;
 
     public override void Enter()
@@ -19,12 +20,23 @@ public class LookAround : State
         base.Enter();
         WalkArea.SetActive(true);
         allCheckpointsFilled = false;
+        completedCheckpointChecks.Clear();
         SpawnCheckpointsAroundPlayer();
         Debug.Log("State 2");
 
     }
     public override void Execute()
     {
+        for (int i = 0; i < spawnedCheckpointChecks.Count; i++)
+        {
+            var check = spawnedCheckpointChecks[i];
+            if (check == null || !check.IsFilled)
+                continue;
+
+            if (completedCheckpointChecks.Add(check))
+                PlaySuccessCue();
+        }
+
         allCheckpointsFilled = AreAllCheckpointsFilled();
     }
 
@@ -116,6 +128,7 @@ public class LookAround : State
 
         spawnedCheckpoints.Clear();
         spawnedCheckpointChecks.Clear();
+        completedCheckpointChecks.Clear();
     }
 
     private bool AreAllCheckpointsFilled()
