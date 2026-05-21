@@ -19,6 +19,7 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
     [SerializeField] private float earlyWindowSeconds = 0.18f;
     [SerializeField] private float lateWindowSeconds = 0.20f;
     [SerializeField] private float perfectWindowSeconds = 0.08f;
+    [SerializeField] private bool showMissFeedback;
 
     [Header("Events")]
     [SerializeField] private UnityEvent onSequenceCompleted;
@@ -32,6 +33,9 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
     public int CurrentStreak { get; private set; }
     public int BestStreak { get; private set; }
     public int MissCount { get; private set; }
+    public int TotalCompressions { get; private set; }
+    public int SuccessfulCompressions { get; private set; }
+    public int PerfectCompressions { get; private set; }
     public float TargetBpm => targetBpm;
     public int TargetCompressions => targetCompressions;
     public float BeatInterval => 60f / Mathf.Max(1f, targetBpm);
@@ -39,7 +43,7 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
     public float HitWindow01 => Mathf.Clamp01(Mathf.Max(earlyWindowSeconds, lateWindowSeconds) / BeatInterval);
     public float PerfectWindow01 => Mathf.Clamp01(perfectWindowSeconds / BeatInterval);
     public float BeatPhase01 => IsRunning ? Mathf.Repeat((Time.time - sessionStartTime) / BeatInterval, 1f) : 0f;
-    public float Progress => targetCompressions <= 0 ? 1f : Mathf.Clamp01((float)CurrentStreak / targetCompressions);
+    public float Progress => targetCompressions <= 0 ? 1f : Mathf.Clamp01((float)TotalCompressions / targetCompressions);
 
     private float sessionStartTime;
     private bool hasSubscribedToPulse;
@@ -69,6 +73,9 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
         CurrentStreak = 0;
         BestStreak = 0;
         MissCount = 0;
+        TotalCompressions = 0;
+        SuccessfulCompressions = 0;
+        PerfectCompressions = 0;
         sessionStartTime = Time.time;
     }
 
@@ -102,24 +109,31 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
 
         float elapsed = Time.time - sessionStartTime;
         float beatInterval = 60f / Mathf.Max(1f, targetBpm);
-        float expectedBeatTime = (CurrentStreak + HitPhase01) * beatInterval;
+        float expectedBeatTime = (TotalCompressions + HitPhase01) * beatInterval;
         float timingError = elapsed - expectedBeatTime;
         float absoluteError = Mathf.Abs(timingError);
+
+        TotalCompressions++;
 
         if (timingError < -earlyWindowSeconds || timingError > lateWindowSeconds)
         {
             RegisterMiss();
-            return;
+        }
+        else
+        {
+            CurrentStreak++;
+            BestStreak = Mathf.Max(BestStreak, CurrentStreak);
+            SuccessfulCompressions++;
+
+            bool wasPerfect = absoluteError <= perfectWindowSeconds;
+            if (wasPerfect)
+                PerfectCompressions++;
+
+            onRhythmFeedback?.Invoke(this, Mathf.Clamp01(1f - absoluteError / Mathf.Max(0.0001f, lateWindowSeconds)), wasPerfect);
+            RhythmFeedback?.Invoke(this, Mathf.Clamp01(1f - absoluteError / Mathf.Max(0.0001f, lateWindowSeconds)), wasPerfect);
         }
 
-        CurrentStreak++;
-        BestStreak = Mathf.Max(BestStreak, CurrentStreak);
-
-        bool wasPerfect = absoluteError <= perfectWindowSeconds;
-        onRhythmFeedback?.Invoke(this, Mathf.Clamp01(1f - absoluteError / Mathf.Max(0.0001f, lateWindowSeconds)), wasPerfect);
-        RhythmFeedback?.Invoke(this, Mathf.Clamp01(1f - absoluteError / Mathf.Max(0.0001f, lateWindowSeconds)), wasPerfect);
-
-        if (CurrentStreak < targetCompressions)
+        if (TotalCompressions < targetCompressions)
             return;
 
         IsComplete = true;
@@ -133,8 +147,10 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
         MissCount++;
         BestStreak = Mathf.Max(BestStreak, CurrentStreak);
         CurrentStreak = 0;
-        sessionStartTime = Time.time;
-        onRhythmFeedback?.Invoke(this, 0f, false);
-        RhythmFeedback?.Invoke(this, 0f, false);
+        if (showMissFeedback)
+        {
+            onRhythmFeedback?.Invoke(this, 0f, false);
+            RhythmFeedback?.Invoke(this, 0f, false);
+        }
     }
 }
