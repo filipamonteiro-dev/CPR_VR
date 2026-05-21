@@ -8,6 +8,12 @@ public abstract class State : MonoBehaviour
 
     [TextArea(3, 10)]
     [SerializeField] string m_SubtitlesText;
+
+    [Header("Success Feedback")]
+    [SerializeField] private bool playSuccessOnExit = true;
+    [SerializeField] private AudioClip successClip;
+    [SerializeField, Range(0f, 1f)] private float successVolume = 0.2f;
+    [SerializeField] private AudioSource successAudioSource;
    
     public string StateLabel => m_StateLabel;
 
@@ -34,6 +40,9 @@ public abstract class State : MonoBehaviour
     /// </summary>
     public virtual void Exit()
     {
+        if (playSuccessOnExit)
+            PlaySuccessCue();
+
         OnExit?.Invoke(this);
     }
 
@@ -58,6 +67,32 @@ public abstract class State : MonoBehaviour
     public virtual State GetState() => this;
 
     public string GetSubtitles() => m_SubtitlesText;
+
+    protected void PlaySuccessCue()
+    {
+        if (successClip == null)
+            return;
+
+        var source = GetOrCreateSuccessAudioSource();
+        if (source == null)
+            return;
+
+        source.PlayOneShot(successClip, Mathf.Clamp01(successVolume));
+    }
+
+    private AudioSource GetOrCreateSuccessAudioSource()
+    {
+        if (successAudioSource != null)
+            return successAudioSource;
+
+        successAudioSource = GetComponentInParent<AudioSource>(true);
+        if (successAudioSource != null)
+            return successAudioSource;
+
+        successAudioSource = gameObject.AddComponent<AudioSource>();
+        successAudioSource.playOnAwake = false;
+        return successAudioSource;
+    }
 
    
 

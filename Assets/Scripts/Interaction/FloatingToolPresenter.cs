@@ -30,6 +30,10 @@ public class FloatingToolPresenter : MonoBehaviour
     [Header("Mode Objects")]
     [SerializeField] private GameObject[] enableWhenPresented;
     [SerializeField] private GameObject[] disableWhenPresented;
+    [SerializeField] private GameObject[] enableWhenHolstered;
+    [SerializeField] private GameObject[] disableWhenHolstered;
+    [SerializeField] private bool showHolsterVisuals = true;
+    [SerializeField] private bool keepToolRootActiveWhenPresented = true;
 
     [Header("Events")]
     [SerializeField] private UnityEvent onPresented;
@@ -43,6 +47,8 @@ public class FloatingToolPresenter : MonoBehaviour
     public bool IsTransitioning => transitionRoutine != null;
 
     private Coroutine transitionRoutine;
+    private Vector3 initialLocalScale;
+    private bool hasInitialScale;
 
     private void Awake()
     {
@@ -51,6 +57,12 @@ public class FloatingToolPresenter : MonoBehaviour
 
         if (headTransform == null && Camera.main != null)
             headTransform = Camera.main.transform;
+
+        if (toolRoot != null)
+        {
+            initialLocalScale = toolRoot.localScale;
+            hasInitialScale = true;
+        }
 
         ApplyModeObjects(false);
     }
@@ -117,8 +129,15 @@ public class FloatingToolPresenter : MonoBehaviour
         }
 
         toolRoot.SetPositionAndRotation(targetPosition, targetRotation);
+        ApplyHolsterScale();
         IsPresented = false;
         ApplyModeObjects(false);
+    }
+
+    public void SetHolsterVisible(bool visible)
+    {
+        showHolsterVisuals = visible;
+        ApplyModeObjects(IsPresented);
     }
 
     private void BeginTransition(bool presentedState, Vector3 targetPosition, Quaternion targetRotation)
@@ -153,6 +172,7 @@ public class FloatingToolPresenter : MonoBehaviour
         transitionRoutine = null;
 
         IsPresented = presentedState;
+        ApplyPresentationScale(presentedState);
         ApplyModeObjects(IsPresented);
 
         onPresentationChanged?.Invoke(this);
@@ -214,6 +234,35 @@ public class FloatingToolPresenter : MonoBehaviour
     {
         SetObjectsActive(enableWhenPresented, presented);
         SetObjectsActive(disableWhenPresented, !presented);
+        SetObjectsActive(enableWhenHolstered, !presented && showHolsterVisuals);
+        SetObjectsActive(disableWhenHolstered, presented);
+
+        if (presented && keepToolRootActiveWhenPresented && toolRoot != null)
+            toolRoot.gameObject.SetActive(true);
+    }
+
+    private void ApplyPresentationScale(bool presented)
+    {
+        if (toolRoot == null)
+            return;
+
+        if (presented)
+        {
+            if (hasInitialScale)
+                toolRoot.localScale = initialLocalScale;
+        }
+        else
+        {
+            ApplyHolsterScale();
+        }
+    }
+
+    private void ApplyHolsterScale()
+    {
+        if (toolRoot == null || holsterAnchor == null)
+            return;
+
+        toolRoot.localScale = holsterAnchor.localScale;
     }
 
     private static void SetObjectsActive(GameObject[] objects, bool active)
