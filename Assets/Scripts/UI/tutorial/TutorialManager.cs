@@ -34,15 +34,6 @@ public class TutorialManagerUI : MonoBehaviour
     public Button          nextButton;
     public TextMeshProUGUI nextButtonLabel;  // "PRÓXIMO →" ou "INICIAR TREINO →"
 
-    // ── Paciente ────────────────────────────────────────────────────────
-    [Header("Paciente")]
-
-    public GameObject        fullBodyGlow;    // AnimatePresence "full" highlight
-
-    // ── Anotações ───────────────────────────────────────────────────────
-    [Header("Anotações")]
-    public TutorialAnnotationManager annotationManager;
-
     // ── Animação ────────────────────────────────────────────────────────
     [Header("Animação")]
     public float panelFadeDuration = 0.3f;
@@ -55,7 +46,7 @@ public class TutorialManagerUI : MonoBehaviour
     // ── Ciclo de vida ──────────────────────────────────────────────────
     void Start()
     {
-        steps = TutorialStepData.All;
+        steps = TutorialStepsCatalog.All;
 
         // Cria os dots dinamicamente se o container estiver vazio
         BuildDots();
@@ -122,15 +113,6 @@ public class TutorialManagerUI : MonoBehaviour
         nextButtonLabel.text = index == steps.Length - 1
             ? "INICIAR TREINO →"
             : "PRÓXIMO →";
-
-
-
-        // Glow "full body"
-        if (fullBodyGlow != null)
-            fullBodyGlow.SetActive(step.highlight == HighlightMode.Full);
-
-        // ── Anotações ──────────────────────────────────────────────────
-        annotationManager?.ShowAnnotations(step.annotations);
     }
 
     // ── Coroutines de animação ─────────────────────────────────────────

@@ -1,9 +1,7 @@
 using UnityEngine;
 
-namespace VrCpr
+public class VrCprAppController : MonoBehaviour
 {
-    public class VrCprAppController : MonoBehaviour
-    {
         [Header("Panels")]
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject tutorialPanel;
@@ -161,5 +159,4 @@ namespace VrCpr
                 tutorialFlow.SetVisible(screen == AppScreen.Tutorial);
             }
         }
-    }
 }
