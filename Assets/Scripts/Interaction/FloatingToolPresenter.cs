@@ -74,14 +74,27 @@ public class FloatingToolPresenter : MonoBehaviour
 
     private void Update()
     {
-        if (!IsPresented || !followHeadWhilePresented || IsTransitioning)
+        if (IsTransitioning)
             return;
 
-        if (!TryGetPresentedPose(out var targetPosition, out var targetRotation))
+        if (IsPresented)
+        {
+            if (!followHeadWhilePresented)
+                return;
+
+            if (!TryGetPresentedPose(out var targetPosition, out var targetRotation))
+                return;
+
+            toolRoot.position = Vector3.Lerp(toolRoot.position, targetPosition, Time.deltaTime * followPositionLerpSpeed);
+            toolRoot.rotation = Quaternion.Slerp(toolRoot.rotation, targetRotation, Time.deltaTime * followRotationLerpSpeed);
+            return;
+        }
+
+        if (!TryGetHolsterPose(out var holsterPosition, out var holsterRotation))
             return;
 
-        toolRoot.position = Vector3.Lerp(toolRoot.position, targetPosition, Time.deltaTime * followPositionLerpSpeed);
-        toolRoot.rotation = Quaternion.Slerp(toolRoot.rotation, targetRotation, Time.deltaTime * followRotationLerpSpeed);
+        toolRoot.SetPositionAndRotation(holsterPosition, holsterRotation);
+        ApplyHolsterScale();
     }
 
     public void TogglePresentation()

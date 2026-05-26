@@ -33,26 +33,30 @@ public class TutorialFlowController : MonoBehaviour
 
     public void ResetFlow()
     {
-        currentStepIndex = 0;
+        SetStep(0);
+    }
+
+    public void SetStep(int stepIndex)
+    {
+        if (steps == null || steps.Count == 0)
+        {
+            currentStepIndex = 0;
+            RefreshStep();
+            return;
+        }
+
+        currentStepIndex = Mathf.Clamp(stepIndex, 0, steps.Count - 1);
         RefreshStep();
     }
 
     public void NextStep()
     {
-        if (currentStepIndex < steps.Count - 1)
-        {
-            currentStepIndex += 1;
-            RefreshStep();
-        }
+        SetStep(currentStepIndex + 1);
     }
 
     public void PreviousStep()
     {
-        if (currentStepIndex > 0)
-        {
-            currentStepIndex -= 1;
-            RefreshStep();
-        }
+        SetStep(currentStepIndex - 1);
     }
 
     private void RefreshStep()
