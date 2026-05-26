@@ -10,11 +10,34 @@ using UnityEngine;
 /// </summary>
 public class TestTutorialRunner : MonoBehaviour
 {
+    [Tooltip("Reference to the StateMachine that drives the tutorial. If null, will find one automatically.")]
+    [SerializeField] private StateMachine stateMachine;
+
     [Tooltip("Reference to the TutorialFlowController in the scene. If null, will find one automatically.")]
     public TutorialFlowController tutorialFlow;
 
     [Tooltip("Delay between steps while testing (seconds).")]
     public float stepDelay = 0.8f;
+
+    private StateMachine subscribedStateMachine;
+
+    private void OnEnable()
+    {
+        SubscribeToStateMachine();
+    }
+
+    private void Start()
+    {
+        if (subscribedStateMachine != null && subscribedStateMachine.CurrentState != null)
+        {
+            SyncTutorialToCurrentState();
+        }
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromStateMachine();
+    }
 
     [ContextMenu("Run Tutorial Test")]
     public void RunTest()
@@ -26,6 +49,113 @@ public class TestTutorialRunner : MonoBehaviour
         }
 
         StartCoroutine(RunSequence());
+    }
+
+    private void SubscribeToStateMachine()
+    {
+        UnsubscribeFromStateMachine();
+
+        if (stateMachine == null)
+        {
+            stateMachine = FindAnyObjectByType<StateMachine>();
+        }
+
+        if (stateMachine == null)
+        {
+            Debug.LogWarning("[TestTutorialRunner] No StateMachine found in scene for tutorial sync.");
+            return;
+        }
+
+        subscribedStateMachine = stateMachine;
+        subscribedStateMachine.OnEnter += HandleStateMachineEnter;
+        subscribedStateMachine.OnExit += HandleStateMachineExit;
+
+        foreach (var state in subscribedStateMachine.StatesToExecute)
+        {
+            if (state != null)
+            {
+                state.OnEnter += HandleStateEnter;
+            }
+        }
+    }
+
+    private void UnsubscribeFromStateMachine()
+    {
+        if (subscribedStateMachine == null)
+        {
+            return;
+        }
+
+        subscribedStateMachine.OnEnter -= HandleStateMachineEnter;
+        subscribedStateMachine.OnExit -= HandleStateMachineExit;
+
+        foreach (var state in subscribedStateMachine.StatesToExecute)
+        {
+            if (state != null)
+            {
+                state.OnEnter -= HandleStateEnter;
+            }
+        }
+
+        subscribedStateMachine = null;
+    }
+
+    private void HandleStateMachineEnter(State _)
+    {
+        SyncTutorialToCurrentState();
+    }
+
+    private void HandleStateMachineExit(State _)
+    {
+        if (tutorialFlow != null)
+        {
+            tutorialFlow.SetVisible(false);
+        }
+    }
+
+    private void HandleStateEnter(State state)
+    {
+        SyncTutorialToState(state);
+    }
+
+    private void SyncTutorialToCurrentState()
+    {
+        if (subscribedStateMachine == null)
+        {
+            return;
+        }
+
+        if (subscribedStateMachine.CurrentState != null)
+        {
+            SyncTutorialToState(subscribedStateMachine.CurrentState);
+        }
+        else if (tutorialFlow != null)
+        {
+            tutorialFlow.ResetFlow();
+            tutorialFlow.SetVisible(true);
+        }
+    }
+
+    private void SyncTutorialToState(State state)
+    {
+        if (tutorialFlow == null)
+        {
+            tutorialFlow = FindAnyObjectByType<TutorialFlowController>();
+        }
+
+        if (tutorialFlow == null || subscribedStateMachine == null || state == null)
+        {
+            return;
+        }
+
+        int stepIndex = subscribedStateMachine.StatesToExecute.IndexOf(state);
+        if (stepIndex < 0)
+        {
+            return;
+        }
+
+        tutorialFlow.SetVisible(true);
+        tutorialFlow.SetStep(stepIndex);
     }
 
     private IEnumerator RunSequence()

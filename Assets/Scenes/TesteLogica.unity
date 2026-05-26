@@ -2204,9 +2204,9 @@ MonoBehaviour:
   m_StateLabel: 
   m_SubtitlesText: 
   playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   headTiltDetector: {fileID: 1650547416}
   breathingAudioSource: {fileID: 1650547415}
   finishAfterClipEnds: 1
@@ -2824,11 +2824,20 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1949928901}
+    - target: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.303
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+--- !u!82 &648482770 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7211170011767286954, guid: 672b090f58450674c9f879924787d9a9, type: 3}
+  m_PrefabInstance: {fileID: 648482769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &687854494 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7723013535165704887, guid: 672b090f58450674c9f879924787d9a9, type: 3}
@@ -3203,6 +3212,8 @@ GameObject:
   - component: {fileID: 763342326}
   - component: {fileID: 763342325}
   - component: {fileID: 763342327}
+  - component: {fileID: 763342329}
+  - component: {fileID: 763342328}
   m_Layer: 0
   m_Name: TUTORIAL
   m_TagString: Untagged
@@ -3267,6 +3278,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestTutorialRunner
   tutorialFlow: {fileID: 1025826306}
   stepDelay: 0.8
+--- !u!114 &763342328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763342324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d61a4a57999364398415ef851d5af8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothFollowRotation
+  playerHead: {fileID: 1516716240}
+  smoothTime: 0.3
+  rotateVertical: 0
+  rotateHorizontal: 1
+  verticalDeadZone: 10
+  horizontalDeadZone: 15
+  Tutorial: 0
+--- !u!114 &763342329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763342324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7150cd3760a95bd45884cb64189a18d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothFollowPosition
+  target: {fileID: 1516716240}
+  smoothTime: 0.3
+  followX: 1
+  followY: 0
+  followZ: 1
+  Tutorial: 0
+  tutorialZOffset: 0.5
+  deadZoneX: 0.05
+  deadZoneY: 0.05
+  deadZoneZ: 0.05
 --- !u!4 &779469885 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4454556173267821136, guid: 9fe69bcb50633364496edac419d1797a, type: 3}
@@ -4134,7 +4186,8 @@ MonoBehaviour:
   enableWhenPresented:
   - {fileID: 919132148033749319}
   disableWhenPresented: []
-  enableWhenHolstered: []
+  enableWhenHolstered:
+  - {fileID: 919132148033749319}
   disableWhenHolstered: []
   showHolsterVisuals: 1
   keepToolRootActiveWhenPresented: 1
@@ -4258,21 +4311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e79709a0a44a7d44e9aa721cbc4e10bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialFlowController
-  steps:
-  - id: 0
-    label: 312
-    title: 41asdsad
-    instruction: kafhbbasf
-    highlight: 0
-    showArrow: 0
-    showHandPlacement: 0
-  - id: 1
-    label: asdsa
-    title: dasrg qsad
-    instruction: d sdadsa sad
-    highlight: 0
-    showArrow: 0
-    showHandPlacement: 0
+  steps: []
   currentStepIndex: 0
   stepTitleText: {fileID: 1565963791}
   stepLabelText: {fileID: 2014139094}
@@ -4451,10 +4490,10 @@ MonoBehaviour:
   m_UseHighlight: 0
   m_StateLabel: 
   m_SubtitlesText: 
-  playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  playSuccessOnExit: 0
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   ObjectsToSpawnIn:
   - {fileID: 705374796}
   - {fileID: 1657595998}
@@ -4511,9 +4550,9 @@ MonoBehaviour:
   m_StateLabel: 
   m_SubtitlesText: 
   playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   shakeDetector: {fileID: 705374797}
 --- !u!1 &1087620135
 GameObject:
@@ -5167,7 +5206,7 @@ MonoBehaviour:
   rhythmValidator: {fileID: 1116461419}
   rhythmHudPresenter: {fileID: 110793043}
   mannequinResetter: {fileID: 705374799}
-  startOnEnable: 1
+  startOnEnable: 0
 --- !u!114 &1116461425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7027,9 +7066,9 @@ MonoBehaviour:
   m_StateLabel: 
   m_SubtitlesText: 
   playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   phoneDialer: {fileID: 962599143}
   callButtonGate: {fileID: 67807982}
   phonePresenter: {fileID: 0}
@@ -7206,9 +7245,9 @@ MonoBehaviour:
   m_StateLabel: 
   m_SubtitlesText: 
   playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   handPlacementDetector: {fileID: 1116461421}
   softLockFollower: {fileID: 1116461422}
   pulseDetector: {fileID: 1116461420}
@@ -7243,7 +7282,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358558246}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.44}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7318,7 +7357,7 @@ Canvas:
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 1727583393
+  m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &1358558251
@@ -7401,9 +7440,9 @@ MonoBehaviour:
   m_StateLabel: 
   m_SubtitlesText: 
   playSuccessOnExit: 1
-  successClip: {fileID: 0}
+  successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
-  successAudioSource: {fileID: 0}
+  successAudioSource: {fileID: 648482770}
   Checkpoint: {fileID: 355795245112896620, guid: e50918e8ac31f684ca9ee693be9bfe49, type: 3}
   WalkArea: {fileID: 2076005322}
   playerTransform: {fileID: 0}
@@ -8332,7 +8371,7 @@ Transform:
   m_GameObject: {fileID: 1650547413}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.016, z: 0.089}
+  m_LocalPosition: {x: 0, y: -0.026, z: 0.206}
   m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -8633,8 +8672,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -8758,7 +8797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3449784919008568370, guid: fad94b617f0540568dbf4c9c4011248c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5852843801221537128, guid: fad94b617f0540568dbf4c9c4011248c, type: 3}
       propertyPath: requireTag
@@ -10812,7 +10851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2076005323
 MonoBehaviour:
   m_ObjectHideFlags: 0
