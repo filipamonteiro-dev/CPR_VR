@@ -36,8 +36,7 @@ public class TutorialManagerUI : MonoBehaviour
 
     // ── Paciente ────────────────────────────────────────────────────────
     [Header("Paciente")]
-
-    public GameObject        fullBodyGlow;    // AnimatePresence "full" highlight
+    public GameObject        fullBodyGlow;
 
     // ── Anotações ───────────────────────────────────────────────────────
     [Header("Anotações")]
@@ -60,36 +59,14 @@ public class TutorialManagerUI : MonoBehaviour
     // ── Ciclo de vida ──────────────────────────────────────────────────
     void Start()
     {
-        steps = TutorialStepData.All;
+        steps = TutorialStepsCatalog.All;
 
         // Cria os dots dinamicamente se o container estiver vazio
         BuildDots();
 
-        prevButton.onClick.AddListener(GoPrev);
-        nextButton.onClick.AddListener(GoNext);
+        SetNavigationVisible(false);
 
         ApplyStep(currentStep, animate: false);
-    }
-
-    // ── Navegação ──────────────────────────────────────────────────────
-    public void GoNext()
-    {
-        if (currentStep < steps.Length - 1)
-        {
-            currentStep++;
-            ApplyStep(currentStep, animate: true);
-        }
-        else
-        {
-            OnTrainingStart?.Invoke();
-        }
-    }
-
-    public void GoPrev()
-    {
-        if (currentStep == 0) return;
-        currentStep--;
-        ApplyStep(currentStep, animate: true);
     }
 
     // ── Aplicar estado do passo ────────────────────────────────────────
@@ -120,15 +97,17 @@ public class TutorialManagerUI : MonoBehaviour
         else         SetInstructionImmediate(step);
 
         // ── Botão anterior ─────────────────────────────────────────────
-        prevButton.interactable = index > 0;
-        SetButtonAlpha(prevButton, index > 0 ? 0.55f : 0.15f);
+        if (prevButton != null)
+        {
+            prevButton.interactable = index > 0;
+            SetButtonAlpha(prevButton, index > 0 ? 0.55f : 0.15f);
+        }
 
         // ── Label do botão seguinte ────────────────────────────────────
-        nextButtonLabel.text = index == steps.Length - 1
-            ? "INICIAR TREINO →"
-            : "PRÓXIMO →";
-
-
+        if (nextButtonLabel != null)
+            nextButtonLabel.text = index == steps.Length - 1
+                ? "INICIAR TREINO →"
+                : "PRÓXIMO →";
 
         // Glow "full body"
         if (fullBodyGlow != null)
@@ -292,5 +271,23 @@ public class TutorialManagerUI : MonoBehaviour
     {
         var tmp = btn.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null) tmp.alpha = alpha;
+    }
+
+    private void SetNavigationVisible(bool isVisible)
+    {
+        if (prevButton != null)
+        {
+            prevButton.gameObject.SetActive(isVisible);
+        }
+
+        if (nextButton != null)
+        {
+            nextButton.gameObject.SetActive(isVisible);
+        }
+
+        if (nextButtonLabel != null)
+        {
+            nextButtonLabel.gameObject.SetActive(isVisible);
+        }
     }
 }

@@ -5,6 +5,9 @@ public class Call112State : State
     [Header("Dialing")]
     [SerializeField] private PhoneDialer phoneDialer;
     [SerializeField] private ControllerButtonGate callButtonGate;
+    [SerializeField] private FloatingToolPresenter phonePresenter;
+    [SerializeField] private bool showPhoneInHolster = true;
+    [SerializeField] private bool activatePhoneOnEnter = true;
 
     [Header("Quiz")]
     [SerializeField] private Call112QuizController quizController;
@@ -31,6 +34,17 @@ public class Call112State : State
         {
             callButtonGate.ResetGate();
             callButtonGate.CallRequested += OnCallRequested;
+        }
+
+        if (phonePresenter != null)
+        {
+            if (activatePhoneOnEnter && !phonePresenter.gameObject.activeSelf)
+                phonePresenter.gameObject.SetActive(true);
+
+            phonePresenter.SnapToHolster();
+
+            if (showPhoneInHolster)
+                phonePresenter.SetHolsterVisible(true);
         }
 
         if (phoneDialer != null)

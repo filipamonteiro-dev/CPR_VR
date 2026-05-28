@@ -134,10 +134,10 @@ public class CPRRhythmHudPresenter : MonoBehaviour
         feedbackWasPerfect = wasPerfect;
 
         if (feedbackText != null)
-            feedbackText.text = wasPerfect ? "PERFEITO" : feedbackStrength >= 0.5f ? "BOM RITMO" : "FORA DO TEMPO";
+            feedbackText.text = feedbackStrength <= 0f ? "FORA DO TEMPO" : wasPerfect ? "PERFEITO" : "BOM RITMO";
 
         if (feedbackText != null)
-            feedbackText.color = wasPerfect ? perfectColor : feedbackStrength >= 0.5f ? goodColor : missColor;
+            feedbackText.color = feedbackStrength <= 0f ? missColor : wasPerfect ? perfectColor : goodColor;
     }
 
     // Demo API -------------------------------------------------
@@ -228,7 +228,7 @@ public class CPRRhythmHudPresenter : MonoBehaviour
             return;
 
         if (compressionCountText != null)
-            compressionCountText.text = $"{rhythmValidator.CurrentStreak}/{Mathf.Max(1, rhythmValidator.TargetCompressions)}";
+            compressionCountText.text = $"{rhythmValidator.TotalCompressions}/{Mathf.Max(1, rhythmValidator.TargetCompressions)}";
 
         if (bpmText != null)
             bpmText.text = rhythmValidator.IsRunning ? $"{Mathf.RoundToInt(rhythmValidator.TargetBpm)} BPM" : "AGUARDANDO";

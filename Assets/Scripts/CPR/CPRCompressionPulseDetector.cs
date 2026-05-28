@@ -62,7 +62,7 @@ public class CPRCompressionPulseDetector : MonoBehaviour
         if (compressionSource == null || referenceSpace == null)
             return;
 
-        if (placementDetector != null && !placementDetector.IsAligned)
+        if (placementDetector != null && !placementDetector.IsAligned && !IsCompressionActive)
         {
             IsCompressionActive = false;
             hasRestAxisValue = false;
