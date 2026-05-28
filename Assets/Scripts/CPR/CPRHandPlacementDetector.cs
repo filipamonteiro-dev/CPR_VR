@@ -15,8 +15,10 @@ public class CPRHandPlacementDetector : MonoBehaviour
     [SerializeField] private Transform targetTransform;
 
     [Header("Tolerance")]
-    [SerializeField] private float positionTolerance = 0.08f;
+    [SerializeField] private float enterTolerance = 0.08f;
+    [SerializeField] private float exitTolerance = 0.12f;
     [SerializeField] private float holdTimeToLock = 0.2f;
+    [SerializeField] private float lostGraceSeconds = 0.2f;
 
     [Header("Events")]
     [SerializeField] private UnityEvent onAlignmentLocked;
@@ -33,6 +35,7 @@ public class CPRHandPlacementDetector : MonoBehaviour
     public Transform TargetTransform => targetTransform;
 
     private float heldTime;
+    private float lostTimer;
 
     private void OnEnable()
     {
@@ -44,39 +47,55 @@ public class CPRHandPlacementDetector : MonoBehaviour
         if (sourceTransform == null || targetTransform == null)
             return;
 
-        bool isWithinTolerance = IsSourceWithinTolerance();
+        bool isWithinEnter = IsSourceWithinTolerance(enterTolerance);
+        bool isWithinExit = IsSourceWithinTolerance(exitTolerance);
 
-        if (isWithinTolerance)
-            heldTime += Time.deltaTime;
-        else
-            heldTime = 0f;
+        if (!IsAligned)
+        {
+            if (isWithinEnter)
+                heldTime += Time.deltaTime;
+            else
+                heldTime = 0f;
 
-        float lockWindow = Mathf.Max(0.01f, holdTimeToLock);
-        AlignmentProgress = Mathf.Clamp01(heldTime / lockWindow);
+            float lockWindow = Mathf.Max(0.01f, holdTimeToLock);
+            AlignmentProgress = Mathf.Clamp01(heldTime / lockWindow);
 
-        bool shouldBeAligned = heldTime >= lockWindow;
-        if (shouldBeAligned == IsAligned)
+            if (heldTime >= lockWindow)
+            {
+                IsAligned = true;
+                lostTimer = 0f;
+                AlignmentLocked?.Invoke(this);
+                onAlignmentLocked?.Invoke();
+                onAlignmentChangedDetailed?.Invoke(this, true);
+            }
+
+            return;
+        }
+
+        AlignmentProgress = 1f;
+
+        if (isWithinExit)
+        {
+            lostTimer = 0f;
+            return;
+        }
+
+        lostTimer += Time.deltaTime;
+        if (lostTimer < Mathf.Max(0f, lostGraceSeconds))
             return;
 
-        IsAligned = shouldBeAligned;
-
-        if (IsAligned)
-        {
-            AlignmentLocked?.Invoke(this);
-            onAlignmentLocked?.Invoke();
-        }
-        else
-        {
-            AlignmentLost?.Invoke(this);
-            onAlignmentLost?.Invoke();
-        }
-
-        onAlignmentChangedDetailed?.Invoke(this, IsAligned);
+        IsAligned = false;
+        heldTime = 0f;
+        lostTimer = 0f;
+        AlignmentLost?.Invoke(this);
+        onAlignmentLost?.Invoke();
+        onAlignmentChangedDetailed?.Invoke(this, false);
     }
 
     public void ResetDetector()
     {
         heldTime = 0f;
+        lostTimer = 0f;
         AlignmentProgress = 0f;
         IsAligned = false;
     }
@@ -103,11 +122,11 @@ public class CPRHandPlacementDetector : MonoBehaviour
         return Vector3.Distance(sourceTransform.position, targetTransform.position);
     }
 
-    private bool IsSourceWithinTolerance()
+    private bool IsSourceWithinTolerance(float tolerance)
     {
         if (sourceTransform == null || targetTransform == null)
             return false;
 
-        return GetPositionError() <= positionTolerance;
+        return GetPositionError() <= tolerance;
     }
 }

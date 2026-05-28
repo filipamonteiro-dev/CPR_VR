@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace VrCpr
+public class TrainingSessionController : MonoBehaviour
 {
-    public class TrainingSessionController : MonoBehaviour
-    {
         [Header("Mode")]
         [SerializeField] private TrainingMode currentMode = TrainingMode.Guided;
         [SerializeField] private bool simulateSession = true;
@@ -176,5 +174,4 @@ namespace VrCpr
             int remainingSeconds = seconds % 60;
             return $"{minutes:00}:{remainingSeconds:00}";
         }
-    }
 }

@@ -32,6 +32,11 @@ public class ShakeGestureDetector : MonoBehaviour
     [SerializeField] private float maxPauseTime = 0.35f;
     [SerializeField] private float progressDecayPerSecond = 0.75f;
 
+    [Header("Nudge mode")]
+    [SerializeField] private bool useNudgeMode = true;
+    [SerializeField] private float nudgeDisplacementThreshold = 0.01f;
+    [SerializeField] private float nudgeRequiredTime = 0.25f;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onShakeValidated;
     [SerializeField] private ProgressChangedEvent onProgressChanged;
@@ -48,6 +53,7 @@ public class ShakeGestureDetector : MonoBehaviour
     private float lastMotionTime;
     private float lastVelocitySign;
     private bool hasVelocitySign;
+    private float nudgeTime;
 
     private void Awake()
     {
@@ -69,6 +75,7 @@ public class ShakeGestureDetector : MonoBehaviour
         lastMotionTime = Time.time;
         hasVelocitySign = false;
         lastVelocitySign = 0f;
+        nudgeTime = 0f;
         lastAxisValue.Clear();
         onProgressChanged?.Invoke(Progress);
     }
@@ -87,6 +94,27 @@ public class ShakeGestureDetector : MonoBehaviour
 
         if (!TrySampleMotion(Time.deltaTime, out var frameDisplacement, out var averageVelocitySign))
             return;
+
+        if (useNudgeMode)
+        {
+            if (frameDisplacement >= nudgeDisplacementThreshold)
+            {
+                nudgeTime += Time.deltaTime;
+                lastMotionTime = Time.time;
+            }
+            else if (Time.time - lastMotionTime > maxPauseTime)
+            {
+                nudgeTime = Mathf.Max(0f, nudgeTime - progressDecayPerSecond * Time.deltaTime);
+            }
+
+            Progress = nudgeRequiredTime > 0f ? Mathf.Clamp01(nudgeTime / nudgeRequiredTime) : 1f;
+            onProgressChanged?.Invoke(Progress);
+
+            if (nudgeTime >= nudgeRequiredTime)
+                Validate();
+
+            return;
+        }
 
         if (frameDisplacement >= minFrameDisplacement)
         {
@@ -213,6 +241,14 @@ public class ShakeGestureDetector : MonoBehaviour
             return;
 
         if (directionChanges < requiredDirectionChanges)
+            return;
+
+        Validate();
+    }
+
+    private void Validate()
+    {
+        if (IsValidated)
             return;
 
         IsValidated = true;
