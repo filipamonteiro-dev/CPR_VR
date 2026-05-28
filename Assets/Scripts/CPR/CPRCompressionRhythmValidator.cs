@@ -133,7 +133,16 @@ public class CPRCompressionRhythmValidator : MonoBehaviour
         MissCount++;
         BestStreak = Mathf.Max(BestStreak, CurrentStreak);
         CurrentStreak = 0;
-        sessionStartTime = Time.time;
+
+        // Preserve beat phase continuity so the HUD marker keeps moving smoothly.
+        // Instead of resetting to Time.time (which jumps the marker to the left edge),
+        // snap sessionStartTime to the start of the current beat cycle so the next
+        // expected hit still aligns with HitPhase01 on the running visual beat.
+        float beatInterval = 60f / Mathf.Max(1f, targetBpm);
+        float elapsed = Time.time - sessionStartTime;
+        float cyclesElapsed = Mathf.Floor(elapsed / beatInterval);
+        sessionStartTime = Time.time - (elapsed - cyclesElapsed * beatInterval);
+
         onRhythmFeedback?.Invoke(this, 0f, false);
         RhythmFeedback?.Invoke(this, 0f, false);
     }

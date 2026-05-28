@@ -35,7 +35,7 @@ namespace VRCPR.UI
         private readonly Color textMedium = new Color(1f, 1f, 1f, 0.4f);
         private readonly Color textBright = new Color(1f, 1f, 1f, 0.82f);
 
-        void Start()
+        void Awake()
         {
             BuildUI();
             PositionInFrontOfPlayer();
@@ -52,7 +52,7 @@ namespace VRCPR.UI
 
             rootUI.AddComponent<CanvasScaler>();
             rootUI.AddComponent<GraphicRaycaster>();
-            // rootUI.AddComponent<TrackedDeviceGraphicRaycaster>(); // Descomentar se for usar botões no VR
+            rootUI.AddComponent<TrackedDeviceGraphicRaycaster>();
 
             var rt = rootUI.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(1000, 600);
@@ -82,11 +82,8 @@ namespace VRCPR.UI
             CreateTMPText(headerObj, "// MÓDULO TUTORIAL //", new Vector2(-360, 10), new Vector2(200, 20), 9f, textDim).characterSpacing = 5f;
             CreateTMPText(headerObj, "PROCEDIMENTO DE RCP", new Vector2(-360, -10), new Vector2(250, 20), 14f, textBright).characterSpacing = 2f;
 
-            // Centro: Pontos/Dots de progresso (Espaço reservado mockado)
-            var dotsObj = new GameObject("ProgressDots");
-            dotsObj.transform.SetParent(headerObj.transform, false);
-            CreateTMPText(dotsObj, "[ 1 ] -- 2 -- 3 -- 4 -- 5 -- 6", Vector2.zero, new Vector2(300, 20), 12f, textMedium)
-                .alignment = TextAlignmentOptions.Center;
+            // Centro: Dots visuais de progresso
+            BuildDotsContainer(headerObj);
 
             // Direita: Contagem
             CreateTMPText(headerObj, "ETAPA", new Vector2(380, 10), new Vector2(160, 20), 9f, textDim)
@@ -189,6 +186,105 @@ namespace VRCPR.UI
             btn.targetGraphic = bgImg;
 
             return btnObj;
+        }
+
+        // ── Dots de progresso ─────────────────────────────────────────────────────────
+
+        void BuildDotsContainer(GameObject parent)
+        {
+            int stepCount = TutorialStepData.All.Length;
+
+            var container = new GameObject("DotsContainer");
+            container.transform.SetParent(parent.transform, false);
+            var rt = container.AddComponent<RectTransform>();
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = new Vector2((float)stepCount * 32f, 28f);
+
+            var hlg = container.AddComponent<HorizontalLayoutGroup>();
+            hlg.spacing = 8f;
+            hlg.childAlignment = TextAnchor.MiddleCenter;
+            hlg.childForceExpandWidth = false;
+            hlg.childForceExpandHeight = false;
+            hlg.childControlWidth = false;
+            hlg.childControlHeight = false;
+
+            for (int i = 0; i < stepCount; i++)
+                BuildStepDot(container, i);
+        }
+
+        void BuildStepDot(GameObject parent, int index)
+        {
+            var dot = new GameObject($"StepDot_{index + 1}");
+            dot.transform.SetParent(parent.transform, false);
+            var rt = dot.AddComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(24f, 24f);
+
+            var le = dot.AddComponent<LayoutElement>();
+            le.preferredWidth  = 24f;
+            le.preferredHeight = 24f;
+            le.minWidth  = 24f;
+            le.minHeight = 24f;
+
+            var dotUI = dot.AddComponent<StepDotUI>();
+            dotUI.dotRect       = rt;
+            dotUI.sizeActive    = 24f;
+            dotUI.sizeInactive  = 24f;
+
+            // Border (Outline)
+            var borderGO = new GameObject("Border");
+            borderGO.transform.SetParent(dot.transform, false);
+            SetupFullRect(borderGO);
+            var borderImg = borderGO.AddComponent<Image>();
+            borderImg.color = Color.clear;
+            var outline = borderGO.AddComponent<Outline>();
+            outline.effectColor    = new Color(1f, 1f, 1f, 0.20f);
+            outline.effectDistance = new Vector2(1f, -1f);
+            dotUI.borderImage = borderImg;
+
+            // Fill
+            var fillGO = new GameObject("Fill");
+            fillGO.transform.SetParent(dot.transform, false);
+            SetupFullRect(fillGO);
+            var fillImg = fillGO.AddComponent<Image>();
+            fillImg.color = Color.clear;
+            dotUI.fillImage = fillImg;
+
+            // Número
+            var numGO = new GameObject("Number");
+            numGO.transform.SetParent(dot.transform, false);
+            SetupFullRect(numGO);
+            var numTmp = numGO.AddComponent<TextMeshProUGUI>();
+            numTmp.text      = (index + 1).ToString();
+            numTmp.fontSize  = 10f;
+            numTmp.alignment = TextAlignmentOptions.Center;
+            numTmp.color     = new Color(1f, 1f, 1f, 0.25f);
+            if (tutorialFont != null) numTmp.font = tutorialFont;
+            dotUI.numberText = numTmp;
+
+            // Check (escondido por defeito)
+            var chkGO = new GameObject("Check");
+            chkGO.transform.SetParent(dot.transform, false);
+            SetupFullRect(chkGO);
+            var chkTmp = chkGO.AddComponent<TextMeshProUGUI>();
+            chkTmp.text      = "✓";
+            chkTmp.fontSize  = 10f;
+            chkTmp.alignment = TextAlignmentOptions.Center;
+            chkTmp.color     = new Color(1f, 1f, 1f, 0.70f);
+            if (tutorialFont != null) chkTmp.font = tutorialFont;
+            chkGO.SetActive(false);
+            dotUI.checkText = chkTmp;
+
+            dotUI.SetIndex(index);
+            dotUI.SetState(active: index == 0, complete: false);
+        }
+
+        void SetupFullRect(GameObject go)
+        {
+            var rt = go.AddComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
         }
 
         // ── Helpers Utilitários (Mesmos usados no RCPMenuBuilder) ─────────────────────
