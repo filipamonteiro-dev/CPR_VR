@@ -2201,8 +2201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadTiltBreathingState
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: VERIFICAR RESPIRACAO
+  m_SubtitlesText: Inclina a cabeca para tras e verifica se o paciente respira.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -3247,6 +3247,9 @@ MonoBehaviour:
   prevButton: {fileID: 2053048487}
   nextButton: {fileID: 1152714030}
   nextButtonLabel: {fileID: 1687549173}
+  fullBodyGlow: {fileID: 0}
+  annotationManager: {fileID: 0}
+  whiteboard: {fileID: 0}
   panelFadeDuration: 0.3
 --- !u!4 &763342326
 Transform:
@@ -3276,6 +3279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f93cac2b0455944964583e258bdaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestTutorialRunner
+  stateMachine: {fileID: 0}
   tutorialFlow: {fileID: 1025826306}
   stepDelay: 0.8
 --- !u!114 &763342328
@@ -4488,8 +4492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: APROXIMA-TE
+  m_SubtitlesText: Teleporta-te para junto do paciente.
   playSuccessOnExit: 0
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -4547,8 +4551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckConscience
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: VERIFICAR CONSCIENCIA
+  m_SubtitlesText: Agita os ombros do paciente e verifica se responde.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -7063,8 +7067,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Call112State
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: LIGAR 112
+  m_SubtitlesText: Encontra o telefone no teu cinto, clica no grip para o abrires
+    e marca 1-1-2 para chamar socorro.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -7076,6 +7081,9 @@ MonoBehaviour:
   activatePhoneOnEnter: 1
   quizController: {fileID: 67807983}
   startQuizImmediately: 0
+  waypointHUD: {fileID: 0}
+  dialerHUD: {fileID: 0}
+  phoneHighlight: {fileID: 0}
 --- !u!1 &1346539544
 GameObject:
   m_ObjectHideFlags: 0
@@ -7242,8 +7250,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CPRCompressionState
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: COMPRESSOES
+  m_SubtitlesText: Coloca as maos no centro do peito. Comprime ao ritmo indicado.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -7388,8 +7396,6 @@ MonoBehaviour:
   - {fileID: 1189899273}
   - {fileID: 1815985606}
   uiFont: {fileID: 0}
-  buttonBgColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
-  buttonTextColor: {r: 1, g: 1, b: 1, a: 0.9}
   correctColor: {r: 0.24, g: 0.68, b: 0.28, a: 1}
   wrongColor: {r: 0.82, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &1361060708
@@ -7437,8 +7443,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LookAround
   m_UseHighlight: 0
-  m_StateLabel: 
-  m_SubtitlesText: 
+  m_StateLabel: OBSERVA O LOCAL
+  m_SubtitlesText: Olha a tua volta para verificar a seguranca do local.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
