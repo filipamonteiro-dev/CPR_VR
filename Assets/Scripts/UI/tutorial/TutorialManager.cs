@@ -43,6 +43,11 @@ public class TutorialManagerUI : MonoBehaviour
     [Header("Anotações")]
     public TutorialAnnotationManager annotationManager;
 
+    // ── Whiteboard ──────────────────────────────────────────────────────
+    [Header("Whiteboard")]
+    [Tooltip("Opcional — whiteboard físico na cena que mostra os passos e a instrução atual")]
+    public TutorialWhiteboardUI whiteboard;
+
     // ── Animação ────────────────────────────────────────────────────────
     [Header("Animação")]
     public float panelFadeDuration = 0.3f;
@@ -131,6 +136,9 @@ public class TutorialManagerUI : MonoBehaviour
 
         // ── Anotações ──────────────────────────────────────────────────
         annotationManager?.ShowAnnotations(step.annotations);
+
+        // ── Whiteboard ─────────────────────────────────────────────────
+        whiteboard?.SetStep(index);
     }
 
     // ── Coroutines de animação ─────────────────────────────────────────
@@ -182,12 +190,102 @@ public class TutorialManagerUI : MonoBehaviour
     // ── Helpers ────────────────────────────────────────────────────────
     private void BuildDots()
     {
-        // Procura dots já existentes no container
-        dots = dotsContainer.GetComponentsInChildren<StepDotUI>();
+        dots = dotsContainer != null
+            ? dotsContainer.GetComponentsInChildren<StepDotUI>()
+            : new StepDotUI[0];
 
-        // Se não existirem, avisa — devem ser criados no Editor
-        if (dots.Length != steps.Length)
-            Debug.LogWarning($"[TutorialManager] Esperados {steps.Length} StepDotUI no container, encontrados {dots.Length}. Cria-os no Editor.");
+        if (dots.Length == steps.Length) return;
+
+        // Criação dinâmica quando os dots não estão no Editor
+        if (dotsContainer == null)
+        {
+            var go = new GameObject("DotsContainer");
+            go.transform.SetParent(transform, false);
+            var rt = go.AddComponent<RectTransform>();
+            rt.sizeDelta = new Vector2((float)steps.Length * 32f, 28f);
+            var hlg = go.AddComponent<HorizontalLayoutGroup>();
+            hlg.spacing = 8f;
+            hlg.childAlignment = TextAnchor.MiddleCenter;
+            hlg.childForceExpandWidth  = false;
+            hlg.childForceExpandHeight = false;
+            hlg.childControlWidth  = false;
+            hlg.childControlHeight = false;
+            dotsContainer = go.transform;
+        }
+        else
+        {
+            foreach (Transform child in dotsContainer)
+                Destroy(child.gameObject);
+        }
+
+        dots = new StepDotUI[steps.Length];
+        for (int i = 0; i < steps.Length; i++)
+            dots[i] = CreateDot(dotsContainer.gameObject, i);
+    }
+
+    private StepDotUI CreateDot(GameObject parent, int index)
+    {
+        var dot = new GameObject($"StepDot_{index + 1}");
+        dot.transform.SetParent(parent.transform, false);
+        var rt = dot.AddComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(24f, 24f);
+
+        var le = dot.AddComponent<LayoutElement>();
+        le.preferredWidth  = 24f;
+        le.preferredHeight = 24f;
+        le.minWidth  = 24f;
+        le.minHeight = 24f;
+
+        var dotUI = dot.AddComponent<StepDotUI>();
+        dotUI.dotRect      = rt;
+        dotUI.sizeActive   = 24f;
+        dotUI.sizeInactive = 24f;
+
+        var borderGO  = CreateDotChild(dot, "Border");
+        var borderImg = borderGO.AddComponent<Image>();
+        borderImg.color = Color.clear;
+        var outline = borderGO.AddComponent<Outline>();
+        outline.effectColor    = new Color(1f, 1f, 1f, 0.20f);
+        outline.effectDistance = new Vector2(1f, -1f);
+        dotUI.borderImage = borderImg;
+
+        var fillGO  = CreateDotChild(dot, "Fill");
+        var fillImg = fillGO.AddComponent<Image>();
+        fillImg.color = Color.clear;
+        dotUI.fillImage = fillImg;
+
+        var numGO  = CreateDotChild(dot, "Number");
+        var numTmp = numGO.AddComponent<TextMeshProUGUI>();
+        numTmp.text      = (index + 1).ToString();
+        numTmp.fontSize  = 10f;
+        numTmp.alignment = TextAlignmentOptions.Center;
+        numTmp.color     = new Color(1f, 1f, 1f, 0.25f);
+        dotUI.numberText = numTmp;
+
+        var chkGO  = CreateDotChild(dot, "Check");
+        var chkTmp = chkGO.AddComponent<TextMeshProUGUI>();
+        chkTmp.text      = "✓";
+        chkTmp.fontSize  = 10f;
+        chkTmp.alignment = TextAlignmentOptions.Center;
+        chkTmp.color     = new Color(1f, 1f, 1f, 0.70f);
+        chkGO.SetActive(false);
+        dotUI.checkText = chkTmp;
+
+        dotUI.SetIndex(index);
+        dotUI.SetState(active: index == 0, complete: false);
+        return dotUI;
+    }
+
+    private GameObject CreateDotChild(GameObject parent, string name)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent.transform, false);
+        var rt = go.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        return go;
     }
 
     private void SetButtonAlpha(Button btn, float alpha)
