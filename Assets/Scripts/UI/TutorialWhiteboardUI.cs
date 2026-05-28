@@ -55,7 +55,7 @@ public class TutorialWhiteboardUI : MonoBehaviour
     // ── Ciclo de vida ────────────────────────────────────────────────────
     void Awake()
     {
-        steps = TutorialStepData.All;
+        steps = TutorialStepsCatalog.All;
         BuildBoard();
         PositionBoard();
         ApplyStep(0);
