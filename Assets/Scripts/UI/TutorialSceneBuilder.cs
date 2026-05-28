@@ -192,7 +192,7 @@ namespace VRCPR.UI
 
         void BuildDotsContainer(GameObject parent)
         {
-            int stepCount = TutorialStepData.All.Length;
+            int stepCount = TutorialStepsCatalog.All.Length;
 
             var container = new GameObject("DotsContainer");
             container.transform.SetParent(parent.transform, false);
