@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,8 @@ public class AppStartup : MonoBehaviour
     [SerializeField] StateMachine m_StateMachine;
     [SerializeField] private InputActionReference startTutorialAction;
     private bool m_IsRunning;
+
+    public event Action<StateMachine> TutorialStarted;
  [ContextMenu("StartTut")]
 private void StartTutorial()
     {
@@ -16,6 +19,7 @@ private void StartTutorial()
 
         m_StateMachine.Enter();
         m_IsRunning = true;
+        TutorialStarted?.Invoke(m_StateMachine);
     }
 
 

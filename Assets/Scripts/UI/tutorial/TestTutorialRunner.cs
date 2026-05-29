@@ -10,6 +10,9 @@ using UnityEngine;
 /// </summary>
 public class TestTutorialRunner : MonoBehaviour
 {
+    [Tooltip("Reference to the AppStartup that begins the tutorial. If null, will find one automatically.")]
+    [SerializeField] private AppStartup appStartup;
+
     [Tooltip("Reference to the StateMachine that drives the tutorial. If null, will find one automatically.")]
     [SerializeField] private StateMachine stateMachine;
 
@@ -20,22 +23,65 @@ public class TestTutorialRunner : MonoBehaviour
     public float stepDelay = 0.8f;
 
     private StateMachine subscribedStateMachine;
+    private bool isStateMachineRunning;
+    private State lastSyncedState;
 
     private void OnEnable()
     {
+        if (appStartup == null)
+        {
+            appStartup = FindAnyObjectByType<AppStartup>();
+        }
+
+        if (appStartup != null)
+        {
+            appStartup.TutorialStarted += HandleTutorialStarted;
+        }
+
         SubscribeToStateMachine();
+
+        if (tutorialFlow == null)
+        {
+            tutorialFlow = FindAnyObjectByType<TutorialFlowController>();
+        }
+
+        if (tutorialFlow != null)
+        {
+            tutorialFlow.SetVisible(false);
+        }
     }
 
     private void Start()
     {
         if (subscribedStateMachine != null && subscribedStateMachine.CurrentState != null)
         {
+            isStateMachineRunning = true;
             SyncTutorialToCurrentState();
+        }
+    }
+
+    private void Update()
+    {
+        if (!isStateMachineRunning || subscribedStateMachine == null)
+        {
+            return;
+        }
+
+        var currentState = subscribedStateMachine.CurrentState;
+        if (currentState != null && currentState != lastSyncedState)
+        {
+            SyncTutorialToState(currentState);
+            lastSyncedState = currentState;
         }
     }
 
     private void OnDisable()
     {
+        if (appStartup != null)
+        {
+            appStartup.TutorialStarted -= HandleTutorialStarted;
+        }
+
         UnsubscribeFromStateMachine();
     }
 
@@ -57,7 +103,16 @@ public class TestTutorialRunner : MonoBehaviour
 
         if (stateMachine == null)
         {
-            stateMachine = FindAnyObjectByType<StateMachine>();
+            var machines = FindObjectsByType<StateMachine>(FindObjectsSortMode.None);
+            if (machines.Length == 1)
+            {
+                stateMachine = machines[0];
+            }
+            else if (machines.Length > 1)
+            {
+                Debug.LogWarning("[TestTutorialRunner] Multiple StateMachine instances found. Assign one explicitly.");
+                return;
+            }
         }
 
         if (stateMachine == null)
@@ -67,6 +122,7 @@ public class TestTutorialRunner : MonoBehaviour
         }
 
         subscribedStateMachine = stateMachine;
+        isStateMachineRunning = false;
         subscribedStateMachine.OnEnter += HandleStateMachineEnter;
         subscribedStateMachine.OnExit += HandleStateMachineExit;
 
@@ -98,15 +154,20 @@ public class TestTutorialRunner : MonoBehaviour
         }
 
         subscribedStateMachine = null;
+        isStateMachineRunning = false;
+        lastSyncedState = null;
     }
 
     private void HandleStateMachineEnter(State _)
     {
+        isStateMachineRunning = true;
         SyncTutorialToCurrentState();
     }
 
     private void HandleStateMachineExit(State _)
     {
+        isStateMachineRunning = false;
+        lastSyncedState = null;
         if (tutorialFlow != null)
         {
             tutorialFlow.SetVisible(false);
@@ -115,7 +176,25 @@ public class TestTutorialRunner : MonoBehaviour
 
     private void HandleStateEnter(State state)
     {
+        if (!isStateMachineRunning)
+        {
+            return;
+        }
+
         SyncTutorialToState(state);
+        lastSyncedState = state;
+    }
+
+    private void HandleTutorialStarted(StateMachine startedMachine)
+    {
+        if (startedMachine == null || subscribedStateMachine != startedMachine)
+        {
+            return;
+        }
+
+        isStateMachineRunning = true;
+        lastSyncedState = null;
+        SyncTutorialToCurrentState();
     }
 
     private void SyncTutorialToCurrentState()
@@ -128,11 +207,6 @@ public class TestTutorialRunner : MonoBehaviour
         if (subscribedStateMachine.CurrentState != null)
         {
             SyncTutorialToState(subscribedStateMachine.CurrentState);
-        }
-        else if (tutorialFlow != null)
-        {
-            tutorialFlow.ResetFlow();
-            tutorialFlow.SetVisible(true);
         }
     }
 
