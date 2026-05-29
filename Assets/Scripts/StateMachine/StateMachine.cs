@@ -58,7 +58,7 @@ public class StateMachine : State
     {
 
 
-        if (m_statesToExecute != null || m_statesToExecute.Count > 0)
+        if (m_statesToExecute != null && m_statesToExecute.Count > 0)
         {
             if (currentStateIndex + 1 < m_statesToExecute.Count)
             {

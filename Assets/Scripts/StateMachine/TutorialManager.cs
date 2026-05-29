@@ -37,7 +37,8 @@ public class TutorialManager : MonoBehaviour
     void End()
     {
         m_IsRunning = false;
-     
+        PlayerPrefs.SetInt("TutorialCompleted", 1);
+        PlayerPrefs.Save();
     }
 
     void OnDisable()
