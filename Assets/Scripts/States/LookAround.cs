@@ -6,9 +6,9 @@ public class LookAround : State
     [SerializeField] private GameObject Checkpoint;
     [SerializeField] private GameObject WalkArea;
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float radius = 2.5f;
-    [SerializeField] private float rightAngle = 75f;
-    [SerializeField] private float leftAngle = -75f;
+    [SerializeField] private float radius = 0.5f;
+    [SerializeField] private float rightAngle = 165f;
+    [SerializeField] private float leftAngle = -15f;
 
     private readonly List<GameObject> spawnedCheckpoints = new List<GameObject>(2);
     private readonly List<GazeCheck> spawnedCheckpointChecks = new List<GazeCheck>(2);

@@ -19,10 +19,19 @@ public class TutorialWhiteboardUI : MonoBehaviour
     [Header("Configuração")]
     public Camera         xrCamera;
     public TMP_FontAsset  customFont;
+    [Header("Ligação")]
+    [SerializeField] private StateMachine stateMachine;
     [Tooltip("Distância à frente da câmara (metros)")]
     public float          distanceFromPlayer = 1.8f;
     [Tooltip("Deslocamento vertical relativo à câmara (metros)")]
     public float          verticalOffset     = 0f;
+    [Tooltip("Se ativo, posiciona o board automaticamente em frente ao jogador no início")]
+    public bool           autoPositionOnStart = true;
+
+    private static readonly Vector2 BaseCanvasSize   = new Vector2(820f, 500f);
+    private static readonly Vector2 TargetCanvasSize = new Vector2(1920f, 1080f);
+    private float layoutScaleX = 1f;
+    private float layoutScaleY = 1f;
 
     // ── Paleta (wireframe) ───────────────────────────────────────────────
     private static readonly Color bgMain     = new Color(0.02f, 0.03f, 0.06f, 0.96f);
@@ -51,14 +60,28 @@ public class TutorialWhiteboardUI : MonoBehaviour
     private TextMeshProUGUI  instructionTitle;
     private TextMeshProUGUI  instructionDesc;
     private TextMeshProUGUI  stepCounter;
+    private CanvasGroup      canvasGroup;
 
     // ── Ciclo de vida ────────────────────────────────────────────────────
     void Awake()
     {
         steps = TutorialStepsCatalog.All;
+        ComputeLayoutScale();
         BuildBoard();
-        PositionBoard();
+        if (autoPositionOnStart)
+            PositionBoard();
         ApplyStep(0);
+    }
+
+    void Start()
+    {
+        BindStateMachine();
+        SyncToCurrentState();
+    }
+
+    void OnDestroy()
+    {
+        UnbindStateMachine();
     }
 
     // ── API pública ──────────────────────────────────────────────────────
@@ -67,6 +90,85 @@ public class TutorialWhiteboardUI : MonoBehaviour
         if (index < 0 || index >= steps.Length) return;
         currentStep = index;
         ApplyStep(index);
+    }
+
+    // ── Integração com StateMachine ───────────────────────────────────
+    private void BindStateMachine()
+    {
+        if (stateMachine == null) return;
+        foreach (var state in stateMachine.StatesToExecute)
+            state.OnEnter += OnStateEntered;
+    }
+
+    private void UnbindStateMachine()
+    {
+        if (stateMachine == null) return;
+        foreach (var state in stateMachine.StatesToExecute)
+            state.OnEnter -= OnStateEntered;
+    }
+
+    private void OnStateEntered(State state)
+    {
+        if (stateMachine == null) return;
+
+        int index = stateMachine.CurrentStateIndex;
+        if (index >= 0 && index < steps.Length)
+        {
+            ShowWhiteboard();
+            SetStep(index);
+            return;
+        }
+
+        int matched = FindStepIndexForState(state);
+        if (matched >= 0)
+        {
+            ShowWhiteboard();
+            SetStep(matched);
+        }
+    }
+
+    private void SyncToCurrentState()
+    {
+        if (stateMachine == null) return;
+        int index = stateMachine.CurrentStateIndex;
+        if (index >= 0 && index < steps.Length)
+        {
+            ShowWhiteboard();
+            SetStep(index);
+            return;
+        }
+
+        if (stateMachine.CurrentState != null)
+        {
+            int matched = FindStepIndexForState(stateMachine.CurrentState);
+            if (matched >= 0)
+            {
+                ShowWhiteboard();
+                SetStep(matched);
+            }
+        }
+    }
+
+    private void ShowWhiteboard()
+    {
+        if (canvasGroup == null) return;
+        canvasGroup.alpha = 1f;
+    }
+
+    private int FindStepIndexForState(State state)
+    {
+        if (state == null) return -1;
+        string label = (state.StateLabel ?? string.Empty).Trim();
+        if (label.Length == 0) return -1;
+
+        for (int i = 0; i < steps.Length; i++)
+        {
+            if (string.Equals(steps[i].label, label, System.StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(steps[i].title, label, System.StringComparison.OrdinalIgnoreCase))
+                return i;
+        }
+
+        return -1;
     }
 
     // ── Atualizar conteúdo ───────────────────────────────────────────────
@@ -129,11 +231,15 @@ public class TutorialWhiteboardUI : MonoBehaviour
         gameObject.AddComponent<TrackedDeviceGraphicRaycaster>();
 
         var rt = GetComponent<RectTransform>();
-        rt.sizeDelta  = new Vector2(820f, 500f);
+        rt.sizeDelta  = TargetCanvasSize;
         transform.localScale = Vector3.one * 0.001f;
 
+        canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.alpha = stateMachine != null ? 0f : 1f;
+        canvasGroup.blocksRaycasts = false;
+
         // ── Fundo geral ──────────────────────────────────────────────────
-        var bg = MakeImage(gameObject, bgMain, Vector2.zero, new Vector2(820f, 500f));
+        var bg = MakeImage(gameObject, bgMain, Vector2.zero, BaseCanvasSize);
 
         // Grid subtil de fundo
         BuildBackgroundGrid(gameObject);
@@ -170,8 +276,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var header = new GameObject("Header");
         header.transform.SetParent(root.transform, false);
         var rt = header.AddComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(0f, 235f);
-        rt.sizeDelta        = new Vector2(780f, 44f);
+        rt.anchoredPosition = ScalePos(new Vector2(29f, 222f));
+        rt.sizeDelta        = ScaleSize(new Vector2(780f, 44f));
 
         // Etiqueta módulo
         MakeTMP(header, "// MÓDULO TUTORIAL //",
@@ -192,8 +298,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var panel = new GameObject("StepList");
         panel.transform.SetParent(root.transform, false);
         var rt = panel.AddComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(-295f, -14f);
-        rt.sizeDelta        = new Vector2(228f, 420f);
+        rt.anchoredPosition = ScalePos(new Vector2(-295f, -111f));
+        rt.sizeDelta        = ScaleSize(new Vector2(228f, 420f));
 
         // Título da coluna
         MakeTMP(panel, "PASSOS DO PROCEDIMENTO",
@@ -222,8 +328,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var row = new GameObject($"StepRow_{index + 1}");
         row.transform.SetParent(parent.transform, false);
         var rt = row.AddComponent<RectTransform>();
-        rt.anchoredPosition = pos;
-        rt.sizeDelta        = new Vector2(220f, 48f);
+        rt.anchoredPosition = ScalePos(pos);
+        rt.sizeDelta        = ScaleSize(new Vector2(220f, 48f));
 
         // Fundo da row (highlight quando ativo)
         stepRowBgs[index] = MakeImage(row, Color.clear, Vector2.zero, new Vector2(220f, 48f));
@@ -257,12 +363,12 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var panel = new GameObject("InstructionPanel");
         panel.transform.SetParent(root.transform, false);
         var rt = panel.AddComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(145f, -14f);
-        rt.sizeDelta        = new Vector2(570f, 420f);
+        rt.anchoredPosition = ScalePos(new Vector2(145f, -111f));
+        rt.sizeDelta        = ScaleSize(new Vector2(570f, 420f));
 
         // Número grande da etapa (decorativo)
         bigStepNumber = MakeTMP(panel, "01",
-            new Vector2(-240f, 145f), new Vector2(120f, 80f), 64f,
+            new Vector2(-285f, 145f), new Vector2(120f, 80f), 64f,
             new Color(1f, 1f, 1f, 0.06f), spacing: 2f);
 
         // Título da instrução
@@ -277,7 +383,7 @@ public class TutorialWhiteboardUI : MonoBehaviour
         instructionDesc = MakeTMP(panel, "",
             new Vector2(10f, 40f), new Vector2(510f, 110f), 12f, textMed,
             align: TextAlignmentOptions.TopLeft);
-        if (instructionDesc != null) instructionDesc.lineSpacing = 18f;
+        if (instructionDesc != null) instructionDesc.lineSpacing = 18f * layoutScaleY;
 
         // Separador inferior
         MakeImage(panel, borderDash, new Vector2(10f, -75f), new Vector2(510f, 1f));
@@ -294,8 +400,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var box = new GameObject("VRHint");
         box.transform.SetParent(parent.transform, false);
         var rt = box.AddComponent<RectTransform>();
-        rt.anchoredPosition = pos;
-        rt.sizeDelta        = new Vector2(510f, 52f);
+        rt.anchoredPosition = ScalePos(pos);
+        rt.sizeDelta        = ScaleSize(new Vector2(510f, 52f));
 
         var bg = MakeImage(box, bgPanel, Vector2.zero, new Vector2(510f, 52f));
         var ol = bg.gameObject.AddComponent<Outline>();
@@ -316,8 +422,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var box = new GameObject("CompressionSpec");
         box.transform.SetParent(parent.transform, false);
         var rt = box.AddComponent<RectTransform>();
-        rt.anchoredPosition = pos;
-        rt.sizeDelta        = new Vector2(510f, 52f);
+        rt.anchoredPosition = ScalePos(pos);
+        rt.sizeDelta        = ScaleSize(new Vector2(510f, 52f));
 
         var bg = MakeImage(box, bgPanel, Vector2.zero, new Vector2(510f, 52f));
         var ol = bg.gameObject.AddComponent<Outline>();
@@ -346,7 +452,7 @@ public class TutorialWhiteboardUI : MonoBehaviour
     {
         // Simulamos a grelha com linhas finas
         int cols = 13, rows = 8;
-        float w = 820f, h = 500f;
+        float w = BaseCanvasSize.x, h = BaseCanvasSize.y;
 
         for (int c = 1; c < cols; c++)
         {
@@ -366,8 +472,8 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var go = new GameObject("Img");
         go.transform.SetParent(parent.transform, false);
         var rt = go.AddComponent<RectTransform>();
-        rt.anchoredPosition = pos;
-        rt.sizeDelta        = size;
+        rt.anchoredPosition = ScalePos(pos);
+        rt.sizeDelta        = ScaleSize(size);
         var img = go.AddComponent<Image>();
         img.color = color;
         return img;
@@ -381,14 +487,14 @@ public class TutorialWhiteboardUI : MonoBehaviour
         var go = new GameObject($"T_{text[..Mathf.Min(8, text.Length)]}");
         go.transform.SetParent(parent.transform, false);
         var rt = go.AddComponent<RectTransform>();
-        rt.anchoredPosition = pos;
-        rt.sizeDelta        = size;
+        rt.anchoredPosition = ScalePos(pos);
+        rt.sizeDelta        = ScaleSize(size);
         var tmp = go.AddComponent<TextMeshProUGUI>();
         tmp.text             = text;
-        tmp.fontSize         = fs;
+        tmp.fontSize         = fs * layoutScaleY;
         tmp.color            = color;
         tmp.alignment        = align;
-        tmp.characterSpacing = spacing;
+        tmp.characterSpacing = spacing * layoutScaleY;
         tmp.enableWordWrapping = true;
         if (customFont != null) tmp.font = customFont;
         return tmp;
@@ -397,5 +503,21 @@ public class TutorialWhiteboardUI : MonoBehaviour
     private void AddCorner(GameObject parent, Vector2 pos, Vector2 size, Vector2 offset, Color color)
     {
         MakeImage(parent, color, pos + offset, size);
+    }
+
+    private void ComputeLayoutScale()
+    {
+        layoutScaleX = TargetCanvasSize.x / BaseCanvasSize.x;
+        layoutScaleY = TargetCanvasSize.y / BaseCanvasSize.y;
+    }
+
+    private Vector2 ScalePos(Vector2 pos)
+    {
+        return new Vector2(pos.x * layoutScaleX, pos.y * layoutScaleY);
+    }
+
+    private Vector2 ScaleSize(Vector2 size)
+    {
+        return new Vector2(size.x * layoutScaleX, size.y * layoutScaleY);
     }
 }
