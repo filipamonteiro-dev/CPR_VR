@@ -68,6 +68,14 @@ public abstract class State : MonoBehaviour
 
     public string GetSubtitles() => m_SubtitlesText;
 
+#if UNITY_EDITOR
+    [ContextMenu("Debug/Complete State")]
+    private void DebugCompleteState()
+    {
+        ForceFinished();
+    }
+#endif
+
     protected void PlaySuccessCue()
     {
         if (successClip == null)

@@ -2377,6 +2377,9 @@ MonoBehaviour:
   activatePhoneOnEnter: 1
   quizController: {fileID: 7331792919050182512}
   startQuizImmediately: 0
+  waypointHUD: {fileID: 0}
+  dialerHUD: {fileID: 0}
+  phoneHighlight: {fileID: 0}
 --- !u!1 &2869506202815631678
 GameObject:
   m_ObjectHideFlags: 0
@@ -4195,22 +4198,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed9c89d8c3603142891892af3de11c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CPRRhythmHudPresenter
-  canvasRoot: {fileID: 4637559186524936568}
-  canvasGroup: {fileID: 3247203515851374664}
   rhythmValidator: {fileID: 3531959722021926410}
-  titleText: {fileID: 7125359983996948887}
-  compressionCountText: {fileID: 7518920146277393100}
-  bpmText: {fileID: 8468988876791751696}
-  statusText: {fileID: 4940247914862980080}
-  streakText: {fileID: 1635372844140561911}
-  feedbackText: {fileID: 745586896755007773}
-  progressFill: {fileID: 165577555005986704}
-  beatTrack: {fileID: 6422784564359612523}
-  beatMarker: {fileID: 5440759352405126193}
-  beatHitZone: {fileID: 6291731232755294474}
-  perfectColor: {r: 0.24, g: 0.68, b: 0.28, a: 1}
-  goodColor: {r: 0.95, g: 0.74, b: 0.2, a: 1}
-  missColor: {r: 0.82, g: 0.2, b: 0.2, a: 1}
+  xrCamera: {fileID: 0}
+  customFont: {fileID: 0}
+  placementAnchor: {fileID: 0}
   beatMarkerPadding: 20
   beatHitZoneWidth: 100
 --- !u!225 &3247203515851374664
@@ -7882,8 +7873,6 @@ MonoBehaviour:
   - {fileID: 5410261694056294964}
   - {fileID: 2965111582214843040}
   uiFont: {fileID: 0}
-  buttonBgColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
-  buttonTextColor: {r: 1, g: 1, b: 1, a: 0.9}
   correctColor: {r: 0.24, g: 0.68, b: 0.28, a: 1}
   wrongColor: {r: 0.82, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &7219013152485542692
@@ -8118,6 +8107,9 @@ MonoBehaviour:
   prevButton: {fileID: 4203780429863064455}
   nextButton: {fileID: 1287910092007141659}
   nextButtonLabel: {fileID: 2127762775914999062}
+  fullBodyGlow: {fileID: 0}
+  annotationManager: {fileID: 0}
+  whiteboard: {fileID: 0}
   panelFadeDuration: 0.3
 --- !u!114 &4678650956132137853
 MonoBehaviour:
@@ -8131,6 +8123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f93cac2b0455944964583e258bdaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestTutorialRunner
+  appStartup: {fileID: 0}
   stateMachine: {fileID: 6992283570994635364}
   tutorialFlow: {fileID: 958671790724645606}
   stepDelay: 0.8

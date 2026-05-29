@@ -40,8 +40,8 @@ public class CPRCompressionState : State
 
         if (rhythmHudPresenter != null)
         {
-            rhythmHudPresenter.ResetHud();
             rhythmHudPresenter.SetVisible(true);
+            rhythmHudPresenter.ResetHud();
         }
 
         if (mannequinResetter != null)

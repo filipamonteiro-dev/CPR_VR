@@ -147,6 +147,10 @@ PrefabInstance:
       propertyPath: m_SubtitlesText
       value: Coloca as maos no centro do peito. Comprime 5-6 cm ao ritmo indicado.
       objectReference: {fileID: 0}
+    - target: {fileID: 788080911447843752, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: rhythmHudPresenter
+      value: 
+      objectReference: {fileID: 344300487}
     - target: {fileID: 1131051733268840181, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.175
@@ -171,6 +175,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 1413910655650797443, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: rhythmHudPresenter
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1655885862316764494, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.368
@@ -191,6 +199,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 2016368041062702022, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3112100755863331461, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_StateLabel
       value: APROXIMA-TE
@@ -199,6 +211,18 @@ PrefabInstance:
       propertyPath: m_SubtitlesText
       value: Teleporta-te para junto do paciente.
       objectReference: {fileID: 0}
+    - target: {fileID: 3303418900921819158, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: xrCamera
+      value: 
+      objectReference: {fileID: 131996695}
+    - target: {fileID: 3303418900921819158, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: customFont
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b8f64284f45f424fa0e214c8dc0cac3, type: 2}
+    - target: {fileID: 3303418900921819158, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: placementAnchor
+      value: 
+      objectReference: {fileID: 1070640698}
     - target: {fileID: 3356016418060631498, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_StateLabel
       value: VERIFICAR CONSCIENCIA
@@ -250,6 +274,10 @@ PrefabInstance:
     - target: {fileID: 4101361569347353407, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536067164950654849, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4846969516052143567, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: waypointHUD
@@ -444,17 +472,27 @@ PrefabInstance:
       propertyPath: m_SubtitlesText
       value: Olha a tua volta para verificar a seguranca do local.
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3303418900921819158, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8456376715262526135, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+    - {fileID: 5098773218231825124, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+    - {fileID: 6740640175945210225, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+    - {fileID: 7759374500485518183, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3625054630141129581, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
-      insertIndex: 12
+      insertIndex: 10
+      addedObject: {fileID: 1070640698}
+    - targetCorrespondingSourceObject: {fileID: 3625054630141129581, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      insertIndex: 13
       addedObject: {fileID: 1691471366}
     - targetCorrespondingSourceObject: {fileID: 5484466011672622960, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       insertIndex: 15
       addedObject: {fileID: 1446302555}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6398711160180753904, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 344300487}
   m_SourcePrefab: {fileID: 100100000, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
 --- !u!4 &131996694 stripped
 Transform:
@@ -966,6 +1004,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &344300483 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6398711160180753904, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+  m_PrefabInstance: {fileID: 131996693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &344300487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344300483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed9c89d8c3603142891892af3de11c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPRRhythmHudPresenter
+  rhythmValidator: {fileID: 1903297688}
+  xrCamera: {fileID: 131996695}
+  customFont: {fileID: 11400000, guid: 5b8f64284f45f424fa0e214c8dc0cac3, type: 2}
+  placementAnchor: {fileID: 1070640698}
+  beatMarkerPadding: 20
+  beatHitZoneWidth: 100
 --- !u!1 &354937609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,6 +2549,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027633597}
   m_Mesh: {fileID: 4300000, guid: cbfbe6727ccb8e8468b2c0ea0164180e, type: 3}
+--- !u!1 &1070640697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070640698}
+  m_Layer: 0
+  m_Name: CPRAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1070640698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070640697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -2.3439984, y: 1.2510484, z: -1.7228736}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 131996694}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!23 &1124133725
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3654,6 +3746,17 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1903297688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3531959722021926410, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+  m_PrefabInstance: {fileID: 131996693}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9587685e095cc7f4d9163e396d97fbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPRCompressionRhythmValidator
 --- !u!1 &1904385772
 GameObject:
   m_ObjectHideFlags: 0

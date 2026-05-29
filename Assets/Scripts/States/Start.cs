@@ -49,6 +49,7 @@ public class Start : State
 
     public override void ForceFinished()
     {
+        hasTeleportedToSpot = true;
     }
 
     public override bool IsFinished()

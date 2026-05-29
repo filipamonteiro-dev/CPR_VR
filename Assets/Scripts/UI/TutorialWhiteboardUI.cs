@@ -388,63 +388,7 @@ public class TutorialWhiteboardUI : MonoBehaviour
         // Separador inferior
         MakeImage(panel, borderDash, new Vector2(10f, -75f), new Vector2(510f, 1f));
 
-        // Caixa INTERAÇÃO VR
-        BuildVRHintBox(panel, new Vector2(10f, -110f));
 
-        // Especificações de compressão (apenas passos 5 e 6)
-        BuildCompressionSpec(panel, new Vector2(10f, -155f));
-    }
-
-    private void BuildVRHintBox(GameObject parent, Vector2 pos)
-    {
-        var box = new GameObject("VRHint");
-        box.transform.SetParent(parent.transform, false);
-        var rt = box.AddComponent<RectTransform>();
-        rt.anchoredPosition = ScalePos(pos);
-        rt.sizeDelta        = ScaleSize(new Vector2(510f, 52f));
-
-        var bg = MakeImage(box, bgPanel, Vector2.zero, new Vector2(510f, 52f));
-        var ol = bg.gameObject.AddComponent<Outline>();
-        ol.effectColor    = borderDash;
-        ol.effectDistance = new Vector2(1f, -1f);
-
-        MakeTMP(box, "INTERAÇÃO VR",
-            new Vector2(-180f, 14f), new Vector2(200f, 16f), 8f, textDim,
-            align: TextAlignmentOptions.Left, spacing: 4f);
-        MakeTMP(box, "OLHE PARA A ZONA DESTACADA PARA CONFIRMAR",
-            new Vector2(-180f, -4f), new Vector2(400f, 16f), 9.5f, textMed,
-            align: TextAlignmentOptions.Left, spacing: 1f);
-    }
-
-    private void BuildCompressionSpec(GameObject parent, Vector2 pos)
-    {
-        // Especificações de compressão sempre visíveis (info útil mesmo nos primeiros passos)
-        var box = new GameObject("CompressionSpec");
-        box.transform.SetParent(parent.transform, false);
-        var rt = box.AddComponent<RectTransform>();
-        rt.anchoredPosition = ScalePos(pos);
-        rt.sizeDelta        = ScaleSize(new Vector2(510f, 52f));
-
-        var bg = MakeImage(box, bgPanel, Vector2.zero, new Vector2(510f, 52f));
-        var ol = bg.gameObject.AddComponent<Outline>();
-        ol.effectColor    = borderDash;
-        ol.effectDistance = new Vector2(1f, -1f);
-
-        MakeTMP(box, "SPEC. DE COMPRESSÃO",
-            new Vector2(-190f, 14f), new Vector2(200f, 16f), 8f, textDim,
-            align: TextAlignmentOptions.Left, spacing: 4f);
-
-        // Especificações inline: PROF · TAXA · RETORNO · CICLO
-        string[] labels = { "PROF.",      "TAXA",       "RETORNO",   "CICLO" };
-        string[] values = { "5–6 cm",     "100–110/min","COMPLETO",  "30 : 2" };
-        float startX = -185f;
-        float stepX  = 126f;
-        for (int i = 0; i < labels.Length; i++)
-        {
-            float x = startX + i * stepX;
-            MakeTMP(box, labels[i], new Vector2(x, -2f),  new Vector2(110f, 14f), 8f,  textDim, align: TextAlignmentOptions.Left, spacing: 2f);
-            MakeTMP(box, values[i], new Vector2(x, -16f), new Vector2(110f, 16f), 9.5f, textMed, align: TextAlignmentOptions.Left, spacing: 1f);
-        }
     }
 
     // ── Grelha de fundo ──────────────────────────────────────────────────

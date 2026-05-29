@@ -124,6 +124,20 @@ public class StateMachine : State
             currentState.ForceFinished();
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Debug/Complete Current State")]
+    private void DebugCompleteCurrentState()
+    {
+        SkipState();
+    }
+
+    [ContextMenu("Debug/Complete All States")]
+    private void DebugCompleteAllStates()
+    {
+        ForceFinished();
+    }
+#endif
+
     public override void ForceFinished()
     {
         foreach (var state in m_statesToExecute)
