@@ -312,6 +312,10 @@ PrefabInstance:
       propertyPath: whiteboard
       value: 
       objectReference: {fileID: 262902160}
+    - target: {fileID: 6398711160180753904, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7350612973085560958, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -422,15 +426,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9027458313454014232, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: radius
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 9027458313454014232, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: leftAngle
-      value: -75
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 9027458313454014232, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: rightAngle
-      value: 75
+      value: 165
       objectReference: {fileID: 0}
     - target: {fileID: 9027458313454014232, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_StateLabel

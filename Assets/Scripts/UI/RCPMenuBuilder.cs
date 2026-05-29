@@ -77,21 +77,18 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             bool lockTest = !tutorialCompleted; 
 
             // Tutorial é sempre desbloqueado
-            BuildButton("TUTORIAL", "APRENDA OS PASSOS BÁSICOS", 80, true, false, false, () => SceneManager.LoadScene("TutorialScene"));
+            BuildButton("TUTORIAL", "APRENDA OS PASSOS BÁSICOS", 80, true, false, false, () => SceneManager.LoadScene("TutorialRoom"));
             
             // Treino
-            System.Action trainingAction = lockTraining ? (System.Action)null : () => SceneManager.LoadScene("TrainingScene");
+            System.Action trainingAction = lockTraining ? (System.Action)null : () => SceneManager.LoadScene("MainLevel");
             BuildButton("TREINO", "PRATIQUE COM ASSISTÊNCIA", 0, false, false, lockTraining, trainingAction);
             
-            // Teste
-            System.Action testAction = lockTest ? (System.Action)null : () => SceneManager.LoadScene("TestModeScene");
-            BuildButton("TESTE", "AVALIAÇÃO SEM AUXÍLIO", -80, false, false, lockTest, testAction);
-            
+    
             // Sair
             BuildButton("SAIR DO SISTEMA", "ENCERRAR SIMULAÇÃO", -160, false, true, false, QuitApplication);
 
             // --- NOTA DE RODAPÉ ---
-            var footer = CreateTMPText(menuRoot, "USE O GATILHO DO CONTROLE PARA SELECIONAR",
+            var footer = CreateTMPText(menuRoot, "USE O GATILHO DO COMANDO SPARA SELECIONAR",
                 new Vector2(0, -320), new Vector2(400, 20), 10f, new Color(1f, 1f, 1f, 0.15f));
             footer.alignment = TextAlignmentOptions.Center;
             footer.characterSpacing = 3f;
@@ -295,7 +292,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
         {
             if (xrCamera == null) xrCamera = Camera.main;
             Transform cam = xrCamera.transform;
-            menuRoot.transform.position = cam.position + cam.forward * 1.5f;
+            menuRoot.transform.position = cam.position + cam.forward * 3f;
             menuRoot.transform.LookAt(cam.position);
             menuRoot.transform.Rotate(0, 180, 0);
         }

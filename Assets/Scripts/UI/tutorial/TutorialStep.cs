@@ -46,12 +46,12 @@ public static class TutorialStepsCatalog
 {
     public static readonly TutorialStep[] All =
     {
-        new TutorialStep
+         new TutorialStep
         {
             id = 1,
-            label = "VERIFICACAO DO LOCAL",
-            title = "VERIFIQUE O LOCAL",
-            instruction = "Certifique-se de que a area e segura antes de se aproximar. Procure perigos e confirme que o paciente nao responde.",
+            label = "APROXIME SE",
+            title = "MOVIMENTE SE PARA PERTO DO PACIENTE",
+            instruction = "Use o comando e teleporte-se para o circulo no chão.",
             highlight = HighlightMode.Full,
             showArrow = false,
             showHandPlacement = false,
@@ -64,9 +64,24 @@ public static class TutorialStepsCatalog
         new TutorialStep
         {
             id = 2,
-            label = "PEDIR AJUDA",
-            title = "LIGAR PARA EMERGENCIA",
-            instruction = "Ligue para o 112 ",
+            label = "VERIFICACAO DO LOCAL",
+            title = "VERIFIQUE O LOCAL",
+            instruction = "Certifique-se de que a area é segura olhando para os lados.",
+            highlight = HighlightMode.Full,
+            showArrow = false,
+            showHandPlacement = false,
+            annotations = new[]
+            {
+                new Annotation { xNorm = 0.15f, yNorm = 0.30f, text = "VERIFICAR AMBIENTE", dir = AnnotationDir.Right },
+                new Annotation { xNorm = 0.75f, yNorm = 0.55f, text = "CHECAR RESPOSTA", dir = AnnotationDir.Left }
+            }
+        },
+        new TutorialStep
+        {
+            id = 3,
+            label = "VERIFICAR CONSCIENCIA",
+            title = "AGITE OS OMBROS DO PACIENTE",
+            instruction = "Pegue no  ",
             highlight = HighlightMode.None,
             showArrow = false,
             showHandPlacement = false,
@@ -78,7 +93,7 @@ public static class TutorialStepsCatalog
         },
         new TutorialStep
         {
-            id = 3,
+            id = 4,
             label = "LOCAL DO TORAX",
             title = "LOCALIZAR ZONA DE COMPRESSAO",
             instruction = "Encontre a metade inferior do esterno e posicione a base da mao no centro do peito.",
@@ -93,7 +108,7 @@ public static class TutorialStepsCatalog
         },
         new TutorialStep
         {
-            id = 4,
+            id =5,
             label = "POSICAO DAS MAOS",
             title = "POSICIONE SUAS MAOS",
             instruction = "Sobreponha as maos, entrelace os dedos e mantenha os dedos sem tocar o torax.",
@@ -108,7 +123,7 @@ public static class TutorialStepsCatalog
         },
         new TutorialStep
         {
-            id = 5,
+            id = 6,
             label = "COMPRESSOES",
             title = "INICIAR COMPRESSOES",
             instruction = "Pressione forte e rapido, com retorno completo do torax entre cada compressao.",
@@ -123,7 +138,7 @@ public static class TutorialStepsCatalog
         },
         new TutorialStep
         {
-            id = 6,
+            id = 7,
             label = "CICLO CONTINUO",
             title = "MANTER O CICLO",
             instruction = "Realize 30 compressoes e 2 ventilacoes ate a chegada do suporte avancado.",
