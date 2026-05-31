@@ -44,9 +44,6 @@ public class CPRCompressionState : State
             rhythmHudPresenter.ResetHud();
         }
 
-        if (mannequinResetter != null)
-            mannequinResetter.SetRagdollEnabled(false);
-
         TryStartSession();
     }
 
@@ -78,9 +75,6 @@ public class CPRCompressionState : State
 
         if (rhythmHudPresenter != null)
             rhythmHudPresenter.SetVisible(false);
-
-        if (mannequinResetter != null)
-            mannequinResetter.SetRagdollEnabled(true);
 
         base.Exit();
     }

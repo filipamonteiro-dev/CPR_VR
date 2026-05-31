@@ -19,12 +19,16 @@ public class Call112State : State
     [SerializeField] private PhoneHighlightController phoneHighlight;
 
     private bool isFinished;
+    private bool hasDialedEmergencyNumber;
+    private QuizSession completedSession;
 
     public override void Enter()
     {
         base.Enter();
 
         isFinished = false;
+        hasDialedEmergencyNumber = false;
+        completedSession = null;
 
         if (waypointHUD  != null) waypointHUD.gameObject.SetActive(true);
         if (dialerHUD    != null) dialerHUD.gameObject.SetActive(true);
@@ -69,6 +73,40 @@ public class Call112State : State
         isFinished = true;
     }
 
+    public override float GetCompletionProgress()
+    {
+        float dialProgress = hasDialedEmergencyNumber ? 0.5f : 0f;
+        float quizProgress = 0f;
+
+        QuizSession session = completedSession;
+        if (session == null && quizController != null)
+        {
+            session = quizController.CurrentSession;
+        }
+
+        if (session != null && session.TotalAnswersSubmitted >= 0)
+        {
+            quizProgress = session.TotalQuestions > 0 ? session.Accuracy : 0f;
+        }
+
+        return Mathf.Clamp01(dialProgress + (quizProgress * 0.5f));
+    }
+
+    public override bool IsSuccessfulCompletion()
+    {
+        if (!hasDialedEmergencyNumber)
+        {
+            return false;
+        }
+
+        if (completedSession == null)
+        {
+            return false;
+        }
+
+        return completedSession.IsCompleted && completedSession.TotalAnswersSubmitted > 0 && completedSession.Accuracy >= 1f;
+    }
+
     public override bool IsFinished()
     {
         return isFinished;
@@ -99,11 +137,13 @@ public class Call112State : State
 
     private void OnEmergencyNumberDialed(PhoneDialer dialer)
     {
+        hasDialedEmergencyNumber = true;
         TryStartQuiz();
     }
 
     private void OnQuizCompleted(QuizSession session)
     {
+        completedSession = session;
         isFinished = true;
     }
 

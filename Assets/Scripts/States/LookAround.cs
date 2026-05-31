@@ -45,6 +45,30 @@ public class LookAround : State
         allCheckpointsFilled = true;
     }
 
+    public override float GetCompletionProgress()
+    {
+        if (spawnedCheckpointChecks.Count == 0)
+        {
+            return 0f;
+        }
+
+        int filledCount = 0;
+        for (int i = 0; i < spawnedCheckpointChecks.Count; i++)
+        {
+            if (spawnedCheckpointChecks[i] != null && spawnedCheckpointChecks[i].IsFilled)
+            {
+                filledCount++;
+            }
+        }
+
+        return (float)filledCount / spawnedCheckpointChecks.Count;
+    }
+
+    public override bool IsSuccessfulCompletion()
+    {
+        return AreAllCheckpointsFilled();
+    }
+
     public override bool IsFinished()
     {
         return allCheckpointsFilled;

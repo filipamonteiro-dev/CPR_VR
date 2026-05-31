@@ -17,6 +17,8 @@ public abstract class State : MonoBehaviour
    
     public string StateLabel => m_StateLabel;
 
+    private bool m_ExitWasSuccessful = true;
+
     public event Action<State> OnEnter;
     public event Action<State> OnExit;
     public event Action<State> OnAskToBeActive;
@@ -27,6 +29,7 @@ public abstract class State : MonoBehaviour
     /// </summary>
     public virtual void Enter()
     {
+        m_ExitWasSuccessful = true;
         RaiseOnEnter();
     }
 
@@ -40,7 +43,7 @@ public abstract class State : MonoBehaviour
     /// </summary>
     public virtual void Exit()
     {
-        if (playSuccessOnExit)
+        if (playSuccessOnExit && m_ExitWasSuccessful)
             PlaySuccessCue();
 
         OnExit?.Invoke(this);
@@ -67,6 +70,21 @@ public abstract class State : MonoBehaviour
     public virtual State GetState() => this;
 
     public string GetSubtitles() => m_SubtitlesText;
+
+    public virtual float GetCompletionProgress()
+    {
+        return IsFinished() ? 1f : 0f;
+    }
+
+    public virtual bool IsSuccessfulCompletion()
+    {
+        return IsFinished();
+    }
+
+    public void SetExitOutcome(bool wasSuccessful)
+    {
+        m_ExitWasSuccessful = wasSuccessful;
+    }
 
 #if UNITY_EDITOR
     [ContextMenu("Debug/Complete State")]

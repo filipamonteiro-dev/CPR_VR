@@ -4,6 +4,7 @@ using UnityEngine;
 public class CheckConscience : State
 {
     [SerializeField] private ShakeGestureDetector shakeDetector;
+    [SerializeField] private MannequinResetter mannequinResetter;
 
     private bool isConsciousnessCheckDone;
 
@@ -18,6 +19,9 @@ public class CheckConscience : State
             shakeDetector.ResetDetector();
             shakeDetector.ShakeValidated += OnShakeValidated;
         }
+
+        if (mannequinResetter != null)
+            mannequinResetter.SetRagdollEnabled(true);
 
     }
     public override void Execute()
@@ -38,6 +42,9 @@ public class CheckConscience : State
     {
         if (shakeDetector != null)
             shakeDetector.ShakeValidated -= OnShakeValidated;
+
+        if (mannequinResetter != null)
+            mannequinResetter.SetRagdollEnabled(false);
 
         base.Exit();
 
