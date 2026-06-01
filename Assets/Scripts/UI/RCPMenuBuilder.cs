@@ -45,8 +45,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
             var followPos = menuRoot.AddComponent<SmoothFollowPosition>();
             followPos.Tutorial = true;
-            var followRot = menuRoot.AddComponent<SmoothFollowRotation>();
-            followRot.Tutorial = true;
+       
             followPos.tutorialZOffset = 1f;
             
             
