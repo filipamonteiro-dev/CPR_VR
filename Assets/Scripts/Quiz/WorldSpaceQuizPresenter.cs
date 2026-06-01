@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private Color correctColor = new Color(0.55f, 1f, 0.60f, 0.85f);
     [SerializeField] private Color wrongColor   = new Color(1f, 0.39f, 0.39f, 0.85f);
+    [SerializeField] private float autoHideDelaySeconds = 1.5f;
 
     // ── Paleta ──────────────────────────────────────────────────────────────
     private static readonly Color BgColor      = new Color(0.02f, 0.03f, 0.06f, 0.96f);
@@ -35,6 +37,7 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
 
     private bool showFeedback    = true;
     private int  lastSelectedIndex = -1;
+    private Coroutine autoHideRoutine;
 
     public event Action<int> AnswerSelected;
 
@@ -44,6 +47,7 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
         ApplyTextStyling();
         BindButtons();
         ApplyStyleToAllButtons();
+        NormalizeLocalZ();
     }
 
     // ── API pública ──────────────────────────────────────────────────────────
@@ -100,6 +104,8 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
             if (answerTexts != null && lastSelectedIndex < answerTexts.Length && answerTexts[lastSelectedIndex] != null)
                 answerTexts[lastSelectedIndex].color = isCorrect ? correctColor : wrongColor;
         }
+
+        BeginAutoHide();
     }
 
     public void ShowCompletion(QuizSession session)
@@ -119,6 +125,8 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
             float pct = session.Accuracy * 100f;
             summaryText.text = $"CERTAS: {session.CorrectCount}   ERRADAS: {session.WrongCount}   PRECISÃO: {pct:0}%";
         }
+
+        BeginAutoHide();
     }
 
     // ── Estilo do painel principal ────────────────────────────────────────────
@@ -139,18 +147,22 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
 
     private void ApplyTextStyling()
     {
-        StyleTMP(questionText, TextBright, 18f, 1.5f);
-        StyleTMP(progressText, TextDim,    10f, 5f);
-        StyleTMP(feedbackText, TextMed,    12f, 3f);
-        StyleTMP(summaryText,  TextMed,    10f, 2f);
+        StyleTMP(questionText, TextBright, 26f, 0.8f, 18f, 30f);
+        StyleTMP(progressText, TextDim,    14f, 3f,   10f, 16f);
+        StyleTMP(feedbackText, TextMed,    18f, 1.5f, 14f, 20f);
+        StyleTMP(summaryText,  TextMed,    14f, 1f,   10f, 16f);
     }
 
-    private void StyleTMP(TMP_Text t, Color color, float fontSize, float charSpacing)
+    private void StyleTMP(TMP_Text t, Color color, float fontSize, float charSpacing, float minSize, float maxSize)
     {
         if (t == null) return;
         t.color            = color;
         t.fontSize         = fontSize;
         t.characterSpacing = charSpacing;
+        t.enableAutoSizing = true;
+        t.fontSizeMin      = minSize;
+        t.fontSizeMax      = maxSize;
+        t.overflowMode     = TextOverflowModes.Ellipsis;
         if (uiFont != null) t.font = uiFont;
     }
 
@@ -195,7 +207,10 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
         if (txt != null)
         {
             txt.color            = TextMed;
-            txt.characterSpacing = 1.5f;
+            txt.characterSpacing = 0.6f;
+            txt.enableAutoSizing = true;
+            txt.fontSizeMin      = 14f;
+            txt.fontSizeMax      = 20f;
             if (uiFont != null) txt.font = uiFont;
         }
     }
@@ -314,5 +329,54 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
         rt.sizeDelta      = size;
         var img = go.AddComponent<Image>();
         img.color = CornerAccent;
+    }
+
+    private void BeginAutoHide()
+    {
+        if (autoHideDelaySeconds <= 0f)
+            return;
+
+        if (autoHideRoutine != null)
+            StopCoroutine(autoHideRoutine);
+
+        autoHideRoutine = StartCoroutine(AutoHideAfterDelay());
+    }
+
+    private IEnumerator AutoHideAfterDelay()
+    {
+        yield return new WaitForSeconds(autoHideDelaySeconds);
+        SetVisible(false);
+        autoHideRoutine = null;
+    }
+
+    private void NormalizeLocalZ()
+    {
+        NormalizeZ(questionText);
+        NormalizeZ(progressText);
+        NormalizeZ(feedbackText);
+        NormalizeZ(summaryText);
+
+        if (answerButtons != null)
+        {
+            for (int i = 0; i < answerButtons.Length; i++)
+                NormalizeZ(answerButtons[i]);
+        }
+
+        if (answerTexts != null)
+        {
+            for (int i = 0; i < answerTexts.Length; i++)
+                NormalizeZ(answerTexts[i]);
+        }
+    }
+
+    private static void NormalizeZ(Component component)
+    {
+        if (component == null) return;
+        var rt = component.GetComponent<RectTransform>();
+        if (rt == null) return;
+        var pos = rt.anchoredPosition3D;
+        pos.z = 0f;
+        rt.anchoredPosition3D = pos;
+        rt.localScale = Vector3.one;
     }
 }

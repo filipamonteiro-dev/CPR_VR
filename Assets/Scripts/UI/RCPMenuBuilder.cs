@@ -77,7 +77,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             bool lockTest = !tutorialCompleted; 
 
             // Tutorial é sempre desbloqueado
-            BuildButton("TUTORIAL", "APRENDA OS PASSOS BÁSICOS", 80, true, false, false, () => SceneManager.LoadScene("TutorialRoom"));
+            BuildButton("TUTORIAL", "APRENDA OS PASSOS BÁSICOS", 80, true, false, false, LoadTutorialScene);
             
             // Treino
             System.Action trainingAction = lockTraining ? (System.Action)null : () => SceneManager.LoadScene("MainLevel");
@@ -305,5 +305,12 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 #else
             Application.Quit();
 #endif
+        }
+
+        private void LoadTutorialScene()
+        {
+            PlayerPrefs.SetInt(AppStartup.StartTutorialOnLoadKey, 1);
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("TutorialRoom");
         }
     }

@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class AppStartup : MonoBehaviour
 {
+    public const string StartTutorialOnLoadKey = "StartTutorialOnLoad";
+
     [SerializeField] StateMachine m_StateMachine;
     [SerializeField] private InputActionReference startTutorialAction;
     private bool m_IsRunning;
@@ -20,6 +22,21 @@ private void StartTutorial()
         m_StateMachine.Enter();
         m_IsRunning = true;
         TutorialStarted?.Invoke(m_StateMachine);
+    }
+
+    public void StartTutorialExternal()
+    {
+        StartTutorial();
+    }
+
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt(StartTutorialOnLoadKey, 0) == 1)
+        {
+            PlayerPrefs.SetInt(StartTutorialOnLoadKey, 0);
+            PlayerPrefs.Save();
+            StartTutorial();
+        }
     }
 
 

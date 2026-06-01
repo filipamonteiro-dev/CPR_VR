@@ -24,6 +24,9 @@ public class TutorialEndTransition : MonoBehaviour
     [SerializeField] private bool m_MainLevelStrictValidation = false;
     [SerializeField] private TMP_FontAsset m_FontAsset;
 
+    [Header("Main Level Execution")]
+    [SerializeField] private bool m_RunMainLevelMachineInThisScript = true;
+
     [Header("Main Level Results")]
     [SerializeField] private bool m_ShowResultsScreen = true;
     [SerializeField] private float m_ResultsHoldDuration = 0f;
@@ -33,6 +36,7 @@ public class TutorialEndTransition : MonoBehaviour
     private bool m_HasTriggered;
     private bool m_MainLevelStarted;
     private bool m_ResultsRequested;
+    private bool m_DrivingMainLevelMachine;
     private GameObject m_IntroRoot;
     private CanvasGroup m_IntroGroup;
     private RectTransform m_IntroRect;
@@ -59,6 +63,18 @@ public class TutorialEndTransition : MonoBehaviour
     {
         PositionIntroOverlay();
         PositionResultsOverlay();
+
+        if (m_DrivingMainLevelMachine && m_MainLevelMachine != null)
+        {
+            if (!m_MainLevelMachine.IsFinished())
+            {
+                m_MainLevelMachine.Execute();
+            }
+            else
+            {
+                m_DrivingMainLevelMachine = false;
+            }
+        }
 
         if (m_ShowResultsScreen && m_MainLevelStarted && m_MainLevelMachine != null && !m_ResultsRequested && m_MainLevelMachine.IsFinished())
         {
@@ -95,6 +111,7 @@ public class TutorialEndTransition : MonoBehaviour
         m_HasTriggered = true;
         m_MainLevelStarted = false;
         m_ResultsRequested = false;
+        m_DrivingMainLevelMachine = false;
 
         if (m_ShowIntroMessage)
         {
@@ -153,7 +170,8 @@ public class TutorialEndTransition : MonoBehaviour
 
         PositionIntroOverlay();
 
-        m_MainLevelMachine = FindAnyObjectByType<StateMachine>();
+        m_MainLevelMachine = FindMainLevelStateMachine();
+        var mainLevelStartup = FindMainLevelAppStartup();
         m_RhythmValidator = FindAnyObjectByType<CPRCompressionRhythmValidator>();
         m_TutorialTimer = TutorialStateTimer.Instance != null
             ? TutorialStateTimer.Instance
@@ -175,10 +193,17 @@ public class TutorialEndTransition : MonoBehaviour
 
         yield return new WaitForSeconds(m_IntroHoldDuration);
 
-        if (m_MainLevelMachine != null)
+        if (mainLevelStartup != null)
+        {
+            mainLevelStartup.StartTutorialExternal();
+            m_MainLevelStarted = true;
+            m_DrivingMainLevelMachine = m_RunMainLevelMachineInThisScript && !HasExternalMainLevelRunner();
+        }
+        else if (m_MainLevelMachine != null)
         {
             m_MainLevelMachine.Enter();
             m_MainLevelStarted = true;
+            m_DrivingMainLevelMachine = m_RunMainLevelMachineInThisScript && !HasExternalMainLevelRunner();
         }
 
         if (m_ShowIntroMessage && m_IntroGroup != null)
@@ -615,5 +640,56 @@ public class TutorialEndTransition : MonoBehaviour
         m_ResultsRect = null;
         m_ResultsTitleText = null;
         m_ResultsBodyText = null;
+    }
+
+    private StateMachine FindMainLevelStateMachine()
+    {
+        var machines = FindObjectsByType<StateMachine>(FindObjectsSortMode.None);
+        if (machines == null || machines.Length == 0)
+        {
+            return null;
+        }
+
+        var targetScene = SceneManager.GetSceneByName(m_MainLevelScene);
+        if (targetScene.IsValid())
+        {
+            for (int i = 0; i < machines.Length; i++)
+            {
+                if (machines[i] != null && machines[i].gameObject.scene == targetScene)
+                {
+                    return machines[i];
+                }
+            }
+        }
+
+        return machines[0];
+    }
+
+    private AppStartup FindMainLevelAppStartup()
+    {
+        var startups = FindObjectsByType<AppStartup>(FindObjectsSortMode.None);
+        if (startups == null || startups.Length == 0)
+        {
+            return null;
+        }
+
+        var targetScene = SceneManager.GetSceneByName(m_MainLevelScene);
+        if (targetScene.IsValid())
+        {
+            for (int i = 0; i < startups.Length; i++)
+            {
+                if (startups[i] != null && startups[i].gameObject.scene == targetScene)
+                {
+                    return startups[i];
+                }
+            }
+        }
+
+        return startups[0];
+    }
+
+    private bool HasExternalMainLevelRunner()
+    {
+        return FindAnyObjectByType<AppStartup>() != null || FindAnyObjectByType<TutorialManager>() != null;
     }
 }

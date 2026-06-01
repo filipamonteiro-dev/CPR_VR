@@ -163,6 +163,18 @@ PrefabInstance:
       propertyPath: targetRigidbody
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1980071234514443703, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2223463245171715075, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_StateMachine
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641921777378880432, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3112100755863331461, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: tpSpot
       value: 
@@ -227,13 +239,45 @@ PrefabInstance:
       propertyPath: stateMachine
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5154229199307811055, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154229199307811055, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154229199307811055, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154229199307811055, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154229199307811055, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6563748169361066915, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: referenceSpace
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7733617717225776939, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603742500925084931, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: m_StateMachine
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8622003699754259086, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_Name
       value: Logica
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686689011495137696, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: toolPresenter
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9027458313454014232, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: WalkArea
@@ -527,7 +571,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1621537583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +754,7 @@ Transform:
   m_GameObject: {fileID: 2104489570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2648, y: -0, z: 20.57662}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

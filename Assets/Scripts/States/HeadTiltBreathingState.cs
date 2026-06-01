@@ -4,6 +4,9 @@ public class HeadTiltBreathingState : State
 {
     [Header("Detection")]
     [SerializeField] private HeadTiltDetector headTiltDetector;
+    [SerializeField] private Transform mannequinHead;
+    [SerializeField] private Transform playerHead;
+    [SerializeField] private float startDistance = 0.25f;
 
     [Header("Breathing Audio")]
     [SerializeField] private AudioSource breathingAudioSource;
@@ -26,7 +29,10 @@ public class HeadTiltBreathingState : State
         if (breathingAudioSource != null)
             breathingAudioSource.Stop();
 
-        if (headTiltDetector != null)
+        if (playerHead == null && Camera.main != null)
+            playerHead = Camera.main.transform;
+
+        if (headTiltDetector != null && !UsesProximity())
         {
             headTiltDetector.ResetDetector();
             headTiltDetector.TiltValidated += OnTiltValidated;
@@ -35,6 +41,12 @@ public class HeadTiltBreathingState : State
 
     public override void Execute()
     {
+        if (!hasStartedBreathingAudio && UsesProximity())
+        {
+            if (IsPlayerNearMannequinHead())
+                StartBreathingAudio();
+        }
+
         if (isFinished || !hasStartedBreathingAudio)
             return;
 
@@ -91,6 +103,28 @@ public class HeadTiltBreathingState : State
     }
 
     private void OnTiltValidated(HeadTiltDetector detector)
+    {
+        if (UsesProximity())
+            return;
+
+        StartBreathingAudio();
+    }
+
+    private bool UsesProximity()
+    {
+        return mannequinHead != null && playerHead != null;
+    }
+
+    private bool IsPlayerNearMannequinHead()
+    {
+        if (mannequinHead == null || playerHead == null)
+            return false;
+
+        float sqrDistance = (playerHead.position - mannequinHead.position).sqrMagnitude;
+        return sqrDistance <= startDistance * startDistance;
+    }
+
+    private void StartBreathingAudio()
     {
         if (hasStartedBreathingAudio)
             return;

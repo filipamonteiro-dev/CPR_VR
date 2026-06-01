@@ -158,6 +158,9 @@ public class FloatingToolPresenter : MonoBehaviour
         if (transitionRoutine != null)
             StopCoroutine(transitionRoutine);
 
+        if (presentedState)
+            ApplyPresentationScale(true);
+
         transitionRoutine = StartCoroutine(AnimateTransition(presentedState, targetPosition, targetRotation));
     }
 
@@ -246,7 +249,7 @@ public class FloatingToolPresenter : MonoBehaviour
     private void ApplyModeObjects(bool presented)
     {
         SetObjectsActive(enableWhenPresented, presented);
-        SetObjectsActive(disableWhenPresented, !presented);
+        SetObjectsActive(disableWhenPresented, !presented, presented && keepToolRootActiveWhenPresented ? toolRoot : null);
         SetObjectsActive(enableWhenHolstered, !presented && showHolsterVisuals);
         SetObjectsActive(disableWhenHolstered, presented);
 
@@ -278,7 +281,7 @@ public class FloatingToolPresenter : MonoBehaviour
         toolRoot.localScale = holsterAnchor.localScale;
     }
 
-    private static void SetObjectsActive(GameObject[] objects, bool active)
+    private static void SetObjectsActive(GameObject[] objects, bool active, Transform ignoreTransform = null)
     {
         if (objects == null)
             return;
@@ -286,7 +289,11 @@ public class FloatingToolPresenter : MonoBehaviour
         for (int i = 0; i < objects.Length; i++)
         {
             if (objects[i] != null)
+            {
+                if (ignoreTransform != null && objects[i].transform == ignoreTransform)
+                    continue;
                 objects[i].SetActive(active);
+            }
         }
     }
 }

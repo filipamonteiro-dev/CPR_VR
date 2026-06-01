@@ -12737,6 +12737,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.473
       objectReference: {fileID: 0}
+    - target: {fileID: 7445349263631970755, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: mannequinHead
+      value: 
+      objectReference: {fileID: 1642207765}
+    - target: {fileID: 7445349263631970755, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: startDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7461595054357901982, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_LocalPosition.z
       value: -2.3448977
@@ -12783,6 +12791,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ac7d876b54c1f4fa13a73cb47bdfb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MannequinResetter
+--- !u!4 &1642207765 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8847603537910379501, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+  m_PrefabInstance: {fileID: 1642207763}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1678585134
 GameObject:
   m_ObjectHideFlags: 0
