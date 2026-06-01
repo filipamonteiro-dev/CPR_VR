@@ -3,7 +3,47 @@ guid: ceb997b383aa9454bb3ecdc3fe7367b6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch21_body
+    second: {fileID: 2100000, guid: a6d6e13379936604c9904d6710f57a86, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch21_hair
+    second: {fileID: 2100000, guid: 72e38c8b59d7d44448a52865b7ce288a, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1001_Diffuse
+    second: {fileID: 2800000, guid: d6d90e18d10d2794f9f5a68b0fc9f4e1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1001_Glossiness
+    second: {fileID: 2800000, guid: 69e8d591a2ed3db4d8db632376ea563b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1001_Normal
+    second: {fileID: 2800000, guid: 2260eeb26c70457449943caedab41d84, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1001_Specular
+    second: {fileID: 2800000, guid: bcfebe16ecc685b4899958a8e4f88233, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1002_Diffuse
+    second: {fileID: 2800000, guid: 2d40b0c093675864198d6cbbd9d49240, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Ch21_1002_Normal
+    second: {fileID: 2800000, guid: d9b237b5095c94c498c99a6776f817fb, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -30,7 +70,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
