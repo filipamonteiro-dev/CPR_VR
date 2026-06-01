@@ -36,6 +36,8 @@ public class CPRRhythmHudPresenter : MonoBehaviour
     private static readonly Color TextMed = new Color(1f, 1f, 1f, 0.48f);
     private static readonly Color TextBright = new Color(1f, 1f, 1f, 0.90f);
     private static readonly Color TextFaint = new Color(1f, 1f, 1f, 0.14f);
+    private static readonly Color HitZoneColor = new Color(0.9f, 0.9f, 0.9f, 0.18f);
+    private static readonly Color HitCenterColor = new Color(1f, 1f, 1f, 0.7f);
     private static readonly Color PerfectColor = new Color(0.24f, 0.68f, 0.28f);
     private static readonly Color GoodColor = new Color(0.95f, 0.74f, 0.2f);
     private static readonly Color MissColor = new Color(0.82f, 0.2f, 0.2f);
@@ -50,6 +52,7 @@ public class CPRRhythmHudPresenter : MonoBehaviour
     private RectTransform beatTrack;
     private RectTransform beatMarker;
     private RectTransform beatHitZone;
+    private RectTransform beatHitCenter;
     private CanvasGroup canvasGroup;
     private Coroutine fadeRoutine;
 
@@ -491,7 +494,16 @@ public class CPRRhythmHudPresenter : MonoBehaviour
         beatHitZone.sizeDelta = new Vector2(beatHitZoneWidth, 22f);
         beatHitZone.anchoredPosition = Vector2.zero;
         var hitZoneImage = beatHitZone.gameObject.AddComponent<Image>();
-        hitZoneImage.color = new Color(1f, 1f, 1f, 0.08f);
+        hitZoneImage.color = HitZoneColor;
+
+        beatHitCenter = new GameObject("HitCenter").AddComponent<RectTransform>();
+        beatHitCenter.SetParent(trackGO.transform, false);
+        beatHitCenter.anchorMin = beatHitCenter.anchorMax = new Vector2(0.5f, 0.5f);
+        beatHitCenter.pivot = new Vector2(0.5f, 0.5f);
+        beatHitCenter.sizeDelta = new Vector2(3f, 40f);
+        beatHitCenter.anchoredPosition = Vector2.zero;
+        var hitCenterImage = beatHitCenter.gameObject.AddComponent<Image>();
+        hitCenterImage.color = HitCenterColor;
 
         beatMarker = new GameObject("Marker").AddComponent<RectTransform>();
         beatMarker.SetParent(trackGO.transform, false);
@@ -501,6 +513,10 @@ public class CPRRhythmHudPresenter : MonoBehaviour
         beatMarker.anchoredPosition = new Vector2(-164f * 0.5f + beatMarkerPadding, 0f);
         var markerImage = beatMarker.gameObject.AddComponent<Image>();
         markerImage.color = Accent;
+
+        MakeTMP(panel, "ALVO",
+            new Vector2(0f, 22f), new Vector2(50f, 12f), 8f, TextFaint,
+            TextAlignmentOptions.Center, 2f);
 
         MakeTMP(panel, "APERTE NO RITMO",
             new Vector2(0f, -33f), new Vector2(164f, 18f), 9f, TextFaint,

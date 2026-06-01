@@ -47,6 +47,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             followPos.Tutorial = true;
             var followRot = menuRoot.AddComponent<SmoothFollowRotation>();
             followRot.Tutorial = true;
+            followPos.tutorialZOffset = 1f;
             
             
             menuCanvas = menuRoot.AddComponent<Canvas>();
@@ -292,7 +293,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
         {
             if (xrCamera == null) xrCamera = Camera.main;
             Transform cam = xrCamera.transform;
-            menuRoot.transform.position = cam.position + cam.forward * 3f;
+            menuRoot.transform.position = cam.position + cam.forward * 4f;
             menuRoot.transform.LookAt(cam.position);
             menuRoot.transform.Rotate(0, 180, 0);
         }

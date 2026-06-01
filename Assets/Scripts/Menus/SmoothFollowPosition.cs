@@ -20,7 +20,7 @@ using UnityEngine;
         [SerializeField] public bool Tutorial = false;
 
         [Tooltip("Extra Z offset to apply when Tutorial is enabled.")]
-        [SerializeField] private float tutorialZOffset = 0.5f;
+        [SerializeField] public float tutorialZOffset = 0.5f;
 
       
 
