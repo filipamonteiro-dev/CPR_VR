@@ -1446,6 +1446,20 @@ MonoBehaviour:
   m_FadeScript: {fileID: 0}
   m_MainLevelScene: MainLevel
   m_LoadDelay: 0.7
+  m_IntroCamera: {fileID: 0}
+  m_IntroDistanceFromPlayer: 1.5
+  m_IntroVerticalOffset: -0.15
+  m_ShowIntroMessage: 1
+  m_IntroMessage: "Completaste o tutorial, agora vais poder testar as tuas habilidades
+    numa situa\xE7\xE3o real, boa sorte"
+  m_IntroHoldDuration: 2.2
+  m_IntroFadeDuration: 0.75
+  m_MainLevelStrictValidation: 0
+  m_FontAsset: {fileID: 0}
+  m_RunMainLevelMachineInThisScript: 1
+  m_ShowResultsScreen: 1
+  m_ResultsHoldDuration: 0
+  m_ResultsFadeDuration: 0.75
 --- !u!1 &1986396200047938188
 GameObject:
   m_ObjectHideFlags: 0
@@ -7005,6 +7019,7 @@ MonoBehaviour:
   successVolume: 0.2
   successAudioSource: {fileID: 2542716376804353772}
   shakeDetector: {fileID: 274996336709393962}
+  mannequinResetter: {fileID: 0}
 --- !u!1 &7000328819092735169
 GameObject:
   m_ObjectHideFlags: 0
@@ -7923,6 +7938,7 @@ MonoBehaviour:
   uiFont: {fileID: 0}
   correctColor: {r: 0.24, g: 0.68, b: 0.28, a: 1}
   wrongColor: {r: 0.82, g: 0.2, b: 0.2, a: 1}
+  autoHideDelaySeconds: 1.5
 --- !u!1 &7219013152485542692
 GameObject:
   m_ObjectHideFlags: 0
@@ -9049,6 +9065,9 @@ MonoBehaviour:
   successVolume: 0.2
   successAudioSource: {fileID: 2542716376804353772}
   headTiltDetector: {fileID: 2772267111304717689}
+  mannequinHead: {fileID: 0}
+  playerHead: {fileID: 0}
+  startDistance: 0.25
   breathingAudioSource: {fileID: 8989802181657168376}
   finishAfterClipEnds: 1
   minimumPlaybackTime: 0.75

@@ -19,16 +19,16 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
         private GameObject menuRoot;
 
         // Cores do design (baseadas no Wireframe)
-        private readonly Color bgColor = new Color(0.05f, 0.08f, 0.12f, 1f); // Mantido o seu fundo escuro
+        private readonly Color bgColor = new Color(0.05f, 0.08f, 0.12f, 0f); // Mantido o seu fundo escuro
         private readonly Color borderColor = new Color(1f, 1f, 1f, 0.2f); // rgba(255,255,255,0.2)
         private readonly Color accentBorderColor = new Color(1f, 1f, 1f, 0.55f);
         private readonly Color dangerBorderColor = new Color(1f, 0.31f, 0.31f, 0.45f); // rgba(255,80,80,0.45)
         
         private readonly Color textColor = new Color(1f, 1f, 1f, 0.92f);
-        private readonly Color subTextColor = new Color(1f, 1f, 1f, 0.28f);
+        private readonly Color subTextColor = new Color(1f, 1f, 1f, 0.45f);
         private readonly Color highlightTextColor = new Color(1f, 1f, 1f, 0.9f);
-        private readonly Color selectTextAccentColor = new Color(1f, 1f, 1f, 0.2f);
-        private readonly Color selectTextDangerColor = new Color(1f, 0.39f, 0.39f, 0.35f);
+        private readonly Color selectTextAccentColor = new Color(1f, 1f, 1f, 0.45f);
+        private readonly Color selectTextDangerColor = new Color(1f, 0.39f, 0.39f, 0.55f);
 
         void Start()
         {
@@ -64,7 +64,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             menuRoot.transform.localScale = Vector3.one * 0.001f;
             
             // Fundo geral preto do Canvas (o "Space" à volta do menu)
-            AddImage(menuRoot, new Color(0, 0, 0, 1), Vector2.zero, new Vector2(1195, 682));
+            AddImage(menuRoot, new Color(0, 0, 0, 0), Vector2.zero, new Vector2(1195, 682));
 
             // --- HEADER ---
             BuildHeader();
@@ -90,7 +90,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
             // --- NOTA DE RODAPÉ ---
             var footer = CreateTMPText(menuRoot, "USE O GATILHO DO COMANDO SPARA SELECIONAR",
-                new Vector2(0, -320), new Vector2(400, 20), 10f, new Color(1f, 1f, 1f, 0.15f));
+                new Vector2(0, -320), new Vector2(400, 20), 10f, new Color(1f, 1f, 1f, 0.35f));
             footer.alignment = TextAlignmentOptions.Center;
             footer.characterSpacing = 3f;
         }
@@ -117,7 +117,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
             // Linha superior: // SISTEMA DE TREINO VR //
             var sys = CreateTMPText(menuRoot, "// SISTEMA DE TREINO VR //",
-                new Vector2(0, 275), new Vector2(400, 30), 11f, new Color(1f, 1f, 1f, 0.3f));
+                new Vector2(0, 275), new Vector2(400, 30), 11f, new Color(1f, 1f, 1f, 0.5f));
             sys.alignment = TextAlignmentOptions.Center;
             sys.characterSpacing = 5f;
 
@@ -130,7 +130,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
             // Subtítulo
             var sub = CreateTMPText(menuRoot, "RESSUSCITAÇÃO CARDIOPULMONAR",
-                new Vector2(0, 200), new Vector2(400, 25), 10f, new Color(1f, 1f, 1f, 0.25f));
+                new Vector2(0, 200), new Vector2(400, 25), 10f, new Color(1f, 1f, 1f, 0.45f));
             sub.alignment = TextAlignmentOptions.Center;
             sub.characterSpacing = 4f;
 
@@ -140,17 +140,17 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             var divRt = divRoot.AddComponent<RectTransform>();
             divRt.anchoredPosition = new Vector2(0, 175);
             
-            AddImage(divRoot, new Color(1f, 1f, 1f, 0.12f), new Vector2(-40, 0), new Vector2(64, 1)); // Linha Esq
-            var diamond = AddImage(divRoot, new Color(1f, 1f, 1f, 0.2f), Vector2.zero, new Vector2(6, 6)); // Losango
+            AddImage(divRoot, new Color(1f, 1f, 1f, 0.2f), new Vector2(-40, 0), new Vector2(64, 1)); // Linha Esq
+            var diamond = AddImage(divRoot, new Color(1f, 1f, 1f, 0.3f), Vector2.zero, new Vector2(6, 6)); // Losango
             diamond.rectTransform.localEulerAngles = new Vector3(0, 0, 45);
-            AddImage(divRoot, new Color(1f, 1f, 1f, 0.12f), new Vector2(40, 0), new Vector2(64, 1)); // Linha Dir
+            AddImage(divRoot, new Color(1f, 1f, 1f, 0.2f), new Vector2(40, 0), new Vector2(64, 1)); // Linha Dir
         }
 
         void BuildButton(string label, string subtitle, float posY, bool isAccent, bool isDanger, bool isLocked, System.Action onClick)
         {
             Color currentBorderColor = isDanger ? dangerBorderColor : (isAccent ? accentBorderColor : borderColor);
-            Color hoverColor = isDanger ? new Color(1f, 0.31f, 0.31f, 0.08f) : (isAccent ? new Color(1f, 1f, 1f, 0.08f) : new Color(1f, 1f, 1f, 0.04f));
-            Color pressedColor = isDanger ? new Color(1f, 0.31f, 0.31f, 0.15f) : (isAccent ? new Color(1f, 1f, 1f, 0.15f) : new Color(1f, 1f, 1f, 0.1f));
+            Color hoverColor = isDanger ? new Color(1f, 0.31f, 0.31f, 0.25f) : (isAccent ? new Color(1f, 1f, 1f, 0.22f) : new Color(1f, 1f, 1f, 0.18f));
+            Color pressedColor = isDanger ? new Color(1f, 0.31f, 0.31f, 0.35f) : (isAccent ? new Color(1f, 1f, 1f, 0.32f) : new Color(1f, 1f, 1f, 0.28f));
 
             var btnObj = new GameObject($"Button_{label}");
             btnObj.transform.SetParent(menuRoot.transform, false);
@@ -219,7 +219,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
             }
 
             // Labels e resto do botão... (Ajustei os Y dos textos pela altura nova)
-            Color labelColor = isDanger ? new Color(1f, 0.39f, 0.39f, 0.8f) : (isAccent ? highlightTextColor : new Color(1f, 1f, 1f, 0.65f));
+            Color labelColor = isDanger ? new Color(1f, 0.39f, 0.39f, 0.85f) : (isAccent ? highlightTextColor : new Color(1f, 1f, 1f, 0.75f));
             var lbl = CreateTMPText(btnObj, label,
                 new Vector2(-30, 8), new Vector2(300, 30), 14f, labelColor); // PosY antes 10, agora 8
             lbl.characterSpacing = 3f;
