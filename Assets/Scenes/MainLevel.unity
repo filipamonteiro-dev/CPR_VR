@@ -21794,7 +21794,7 @@ MonoBehaviour:
   softLockFollower: {fileID: 4233598481938694011}
   pulseDetector: {fileID: 6563748170940092848}
   rhythmValidator: {fileID: 3531959720442637337}
-  rhythmHudPresenter: {fileID: 0}
+  rhythmHudPresenter: {fileID: 6398711158572113892}
   mannequinResetter: {fileID: 2011068857}
 --- !u!4 &788730014333734812
 Transform:
@@ -23841,7 +23841,7 @@ MonoBehaviour:
   softLockFollower: {fileID: 4233598481938694011}
   pulseDetector: {fileID: 6563748170940092848}
   rhythmValidator: {fileID: 3531959720442637337}
-  rhythmHudPresenter: {fileID: 0}
+  rhythmHudPresenter: {fileID: 6398711158572113892}
   mannequinResetter: {fileID: 0}
   startOnEnable: 0
 --- !u!114 &1416824572485581645
@@ -24368,7 +24368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CPRCompressionFeedback
   pulseDetector: {fileID: 6563748170940092848}
   hapticInteractors: []
-  targetRigidbody: {fileID: 0}
+  targetRigidbody: {fileID: 1247538490}
   forcePoint: {fileID: 0}
   forceDirectionSource: {fileID: 0}
   autoFindHaptics: 0
