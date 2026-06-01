@@ -12685,6 +12685,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4576053180050395405, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: enableWhenHolstered.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4576053180050395405, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
+      propertyPath: enableWhenPresented.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4893063798197147381, guid: 9ddf501b939fe3a479ecf48c293b05c3, type: 3}
       propertyPath: m_IsKinematic
       value: 1
