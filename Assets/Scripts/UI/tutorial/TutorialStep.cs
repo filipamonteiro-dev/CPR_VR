@@ -49,8 +49,8 @@ public static class TutorialStepsCatalog
          new TutorialStep
         {
             id = 1,
-            label = "APROXIME SE",
-            title = "MOVIMENTE SE PARA PERTO DO PACIENTE",
+            label = "APROXIME-SE",
+            title = "MOVIMENTE-SE PARA PERTO DO PACIENTE",
             instruction = "Use o comando e teleporte-se para o circulo no chão.",
             highlight = HighlightMode.Full,
             showArrow = false,

@@ -19,6 +19,7 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
     [Header("Style")]
     [Tooltip("Optional Font Asset to apply to texts.")]
     [SerializeField] private TMP_FontAsset uiFont;
+    [SerializeField, Range(0.5f, 1.5f)] private float canvasScale = 0.7f;
 
     [Header("Feedback")]
     [SerializeField] private Color correctColor = new Color(0.55f, 1f, 0.60f, 0.85f);
@@ -48,6 +49,7 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
         BindButtons();
         ApplyStyleToAllButtons();
         NormalizeLocalZ();
+        ApplyCanvasScale();
     }
 
     // ── API pública ──────────────────────────────────────────────────────────
@@ -378,5 +380,12 @@ public class WorldSpaceQuizPresenter : MonoBehaviour
         pos.z = 0f;
         rt.anchoredPosition3D = pos;
         rt.localScale = Vector3.one;
+    }
+
+    private void ApplyCanvasScale()
+    {
+        GameObject root = canvasRoot != null ? canvasRoot : gameObject;
+        if (root == null) return;
+        root.transform.localScale = Vector3.one * canvasScale;
     }
 }

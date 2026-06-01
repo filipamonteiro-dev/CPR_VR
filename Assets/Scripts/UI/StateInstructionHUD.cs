@@ -23,6 +23,7 @@ public class StateInstructionHUD : MonoBehaviour
     [SerializeField] private TMP_FontAsset customFont;
     [SerializeField] private float distanceFromPlayer = 1.5f;
     [SerializeField] private float verticalOffset     = -0.15f;
+    [SerializeField, Range(0.8f, 2f)] private float uiScale = 1.2f;
 
     // ── Referências dinâmicas ─────────────────────────────────────────────
     private TextMeshProUGUI labelText;
@@ -32,9 +33,13 @@ public class StateInstructionHUD : MonoBehaviour
     private CanvasGroup     group;
     private Coroutine       fadeRoutine;
 
-    private const float PanelW  = 500f;
-    private const float PanelH  = 220f;
-    private const float BarW    = 440f;
+    private const float PanelWBase = 500f;
+    private const float PanelHBase = 220f;
+    private const float BarWBase   = 440f;
+
+    private float panelW;
+    private float panelH;
+    private float barW;
 
     // ── Paleta ────────────────────────────────────────────────────────────
     private static readonly Color BgColor    = new Color(0.02f, 0.03f, 0.06f, 0.94f);
@@ -105,7 +110,7 @@ public class StateInstructionHUD : MonoBehaviour
         if (stepCounterText  != null) stepCounterText.text = $"{idx + 1} / {total}";
 
         if (progressFillRect != null)
-            progressFillRect.sizeDelta = new Vector2(BarW * ((float)(idx + 1) / Mathf.Max(1, total)), 3f);
+            progressFillRect.sizeDelta = new Vector2(barW * ((float)(idx + 1) / Mathf.Max(1, total)), S(3f));
 
         FadeIn();
     }
@@ -154,12 +159,16 @@ public class StateInstructionHUD : MonoBehaviour
     // ── Construção do HUD ─────────────────────────────────────────────────
     private void BuildHUD()
     {
+        panelW = PanelWBase * uiScale;
+        panelH = PanelHBase * uiScale;
+        barW   = BarWBase * uiScale;
+
         var canvas = gameObject.AddComponent<Canvas>();
         canvas.renderMode  = RenderMode.WorldSpace;
         canvas.worldCamera = xrCamera;
         gameObject.AddComponent<CanvasScaler>();
 
-        GetComponent<RectTransform>().sizeDelta = new Vector2(PanelW, PanelH);
+        GetComponent<RectTransform>().sizeDelta = new Vector2(panelW, panelH);
         transform.localScale = Vector3.one * 0.001f;
 
         group = gameObject.AddComponent<CanvasGroup>();
@@ -167,61 +176,61 @@ public class StateInstructionHUD : MonoBehaviour
         group.blocksRaycasts = false;
 
         // Fundo
-        MakeImg(gameObject, BgColor, Vector2.zero, new Vector2(PanelW, PanelH));
+        MakeImg(gameObject, BgColor, Vector2.zero, new Vector2(panelW, panelH));
         BuildGrid(gameObject);
 
         // Cantos decorativos
-        float hw = PanelW / 2f + 4f, hh = PanelH / 2f + 4f;
+        float hw = panelW / 2f + S(4f), hh = panelH / 2f + S(4f);
         (Vector2 p, Vector2 sz, Vector2 off)[] corners =
         {
-            (new Vector2(-hw, hh),  new Vector2(14f,  2f), new Vector2( 7f,-1f)),
-            (new Vector2(-hw, hh),  new Vector2( 2f, 14f), new Vector2( 1f,-7f)),
-            (new Vector2( hw, hh),  new Vector2(14f,  2f), new Vector2(-7f,-1f)),
-            (new Vector2( hw, hh),  new Vector2( 2f, 14f), new Vector2(-1f,-7f)),
-            (new Vector2(-hw,-hh),  new Vector2(14f,  2f), new Vector2( 7f, 1f)),
-            (new Vector2(-hw,-hh),  new Vector2( 2f, 14f), new Vector2( 1f, 7f)),
-            (new Vector2( hw,-hh),  new Vector2(14f,  2f), new Vector2(-7f, 1f)),
-            (new Vector2( hw,-hh),  new Vector2( 2f, 14f), new Vector2(-1f, 7f)),
+            (new Vector2(-hw, hh),  S(new Vector2(14f,  2f)), S(new Vector2( 7f,-1f))),
+            (new Vector2(-hw, hh),  S(new Vector2( 2f, 14f)), S(new Vector2( 1f,-7f))),
+            (new Vector2( hw, hh),  S(new Vector2(14f,  2f)), S(new Vector2(-7f,-1f))),
+            (new Vector2( hw, hh),  S(new Vector2( 2f, 14f)), S(new Vector2(-1f,-7f))),
+            (new Vector2(-hw,-hh),  S(new Vector2(14f,  2f)), S(new Vector2( 7f, 1f))),
+            (new Vector2(-hw,-hh),  S(new Vector2( 2f, 14f)), S(new Vector2( 1f, 7f))),
+            (new Vector2( hw,-hh),  S(new Vector2(14f,  2f)), S(new Vector2(-7f, 1f))),
+            (new Vector2( hw,-hh),  S(new Vector2( 2f, 14f)), S(new Vector2(-1f, 7f))),
         };
         foreach (var c in corners) MakeImg(gameObject, Accent, c.p + c.off, c.sz);
 
         // Zona de cabeçalho
-        MakeImg(gameObject, HeaderBg,   new Vector2(0f, 83f), new Vector2(PanelW, 54f));
-        MakeImg(gameObject, BorderMain, new Vector2(0f, 56f), new Vector2(PanelW,  1f));
+        MakeImg(gameObject, HeaderBg,   S(new Vector2(0f, 83f)), new Vector2(panelW, S(54f)));
+        MakeImg(gameObject, BorderMain, S(new Vector2(0f, 56f)), new Vector2(panelW, S(1f)));
 
         MakeTMP(gameObject, "// INSTRUÇÃO ATUAL //",
-            new Vector2(-160f, 84f), new Vector2(220f, 16f),
-            9f, TextDim, TextAlignmentOptions.Left, 5f);
+            S(new Vector2(-160f, 84f)), S(new Vector2(220f, 16f)),
+            S(9f), TextDim, TextAlignmentOptions.Left, S(5f));
 
         stepCounterText = MakeTMP(gameObject, "— / —",
-            new Vector2(200f, 84f), new Vector2(80f, 16f),
-            10f, TextMed, TextAlignmentOptions.Right, 2f);
+            S(new Vector2(200f, 84f)), S(new Vector2(80f, 16f)),
+            S(10f), TextMed, TextAlignmentOptions.Right, S(2f));
 
         // Barra de progresso
-        MakeImg(gameObject, new Color(1f, 1f, 1f, 0.06f), new Vector2(0f, 66f), new Vector2(BarW, 3f));
+        MakeImg(gameObject, new Color(1f, 1f, 1f, 0.06f), S(new Vector2(0f, 66f)), new Vector2(barW, S(3f)));
 
         var fillGO = new GameObject("Fill");
         fillGO.transform.SetParent(transform, false);
         progressFillRect = fillGO.AddComponent<RectTransform>();
         progressFillRect.pivot          = new Vector2(0f, 0.5f);
         progressFillRect.anchorMin      = progressFillRect.anchorMax = new Vector2(0.5f, 0.5f);
-        progressFillRect.anchoredPosition = new Vector2(-BarW / 2f, 66f);
-        progressFillRect.sizeDelta      = new Vector2(0f, 3f);
+        progressFillRect.anchoredPosition = new Vector2(-barW / 2f, S(66f));
+        progressFillRect.sizeDelta      = new Vector2(0f, S(3f));
         var fillImg = fillGO.AddComponent<Image>();
         fillImg.color = FillColor;
 
         // Label do estado (destaque)
         labelText = MakeTMP(gameObject, "AGUARDANDO...",
-            new Vector2(0f, 18f), new Vector2(460f, 36f),
-            20f, TextBright, TextAlignmentOptions.Left, 1.5f);
+            S(new Vector2(0f, 18f)), S(new Vector2(460f, 36f)),
+            S(20f), TextBright, TextAlignmentOptions.Left, S(1.5f));
 
         // Texto de instrução
         subtitleText = MakeTMP(gameObject, "",
-            new Vector2(0f, -30f), new Vector2(460f, 68f),
-            11f, TextMed, TextAlignmentOptions.TopLeft);
+            S(new Vector2(0f, -30f)), S(new Vector2(460f, 68f)),
+            S(11f), TextMed, TextAlignmentOptions.TopLeft);
         if (subtitleText != null)
         {
-            subtitleText.lineSpacing    = 16f;
+            subtitleText.lineSpacing    = S(16f);
             subtitleText.enableWordWrapping = true;
         }
     }
@@ -231,11 +240,14 @@ public class StateInstructionHUD : MonoBehaviour
         int cols = 8, rows = 4;
         for (int c = 1; c < cols; c++)
             MakeImg(root, new Color(1f, 1f, 1f, 0.02f),
-                new Vector2(-PanelW / 2f + c * (PanelW / cols), 0f), new Vector2(1f, PanelH));
+                new Vector2(-panelW / 2f + c * (panelW / cols), 0f), new Vector2(S(1f), panelH));
         for (int r = 1; r < rows; r++)
             MakeImg(root, new Color(1f, 1f, 1f, 0.02f),
-                new Vector2(0f, -PanelH / 2f + r * (PanelH / rows)), new Vector2(PanelW, 1f));
+                new Vector2(0f, -panelH / 2f + r * (panelH / rows)), new Vector2(panelW, S(1f)));
     }
+
+    private float S(float v) => v * uiScale;
+    private Vector2 S(Vector2 v) => v * uiScale;
 
     // ── Helpers ───────────────────────────────────────────────────────────
     private Image MakeImg(GameObject parent, Color color, Vector2 pos, Vector2 size)

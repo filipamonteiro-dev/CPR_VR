@@ -16,6 +16,7 @@ public class HeadTiltBreathingState : State
 
     private bool isFinished;
     private bool hasStartedBreathingAudio;
+    private bool hasAudioActuallyStarted;
     private float playbackTimer;
 
     public override void Enter()
@@ -24,6 +25,7 @@ public class HeadTiltBreathingState : State
 
         isFinished = false;
         hasStartedBreathingAudio = false;
+        hasAudioActuallyStarted = false;
         playbackTimer = 0f;
 
         if (breathingAudioSource != null)
@@ -52,6 +54,9 @@ public class HeadTiltBreathingState : State
 
         playbackTimer += Time.deltaTime;
 
+        if (breathingAudioSource != null && breathingAudioSource.isPlaying)
+            hasAudioActuallyStarted = true;
+
         if (!finishAfterClipEnds)
         {
             if (playbackTimer >= minimumPlaybackTime)
@@ -77,7 +82,7 @@ public class HeadTiltBreathingState : State
             return;
         }
 
-        if (!breathingAudioSource.isPlaying && playbackTimer >= minimumPlaybackTime)
+        if (hasAudioActuallyStarted && !breathingAudioSource.isPlaying && playbackTimer >= minimumPlaybackTime)
             isFinished = true;
     }
 
