@@ -178,6 +178,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4551101664677932660, guid: 5aaeeede390a8604cae03b44013796f8, type: 3}
+      propertyPath: uiScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551101664677932660, guid: 5aaeeede390a8604cae03b44013796f8, type: 3}
       propertyPath: xrCamera
       value: 
       objectReference: {fileID: 131996695}
