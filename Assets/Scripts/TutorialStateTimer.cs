@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 public class TutorialStateTimer : MonoBehaviour
 {
+    private const string BaselinePrefsKey = "TutorialStateTimer.Baseline";
+
     [SerializeField] private StateMachine m_StateMachine;
 
     [Header("Persistence")]
@@ -13,6 +16,9 @@ public class TutorialStateTimer : MonoBehaviour
 
     [Header("Validation")]
     [SerializeField] private bool m_StrictTutorialValidation = true;
+
+    [Header("Baseline")]
+    [SerializeField] private string m_BaselineSceneName = "TutorialRoom";
 
     [System.Serializable]
     public class StateTimingEntry
@@ -55,12 +61,29 @@ public class TutorialStateTimer : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+    private class BaselineEntry
+    {
+        public string StateLabel;
+        public float Duration;
+    }
+
+    [System.Serializable]
+    private class BaselineSnapshot
+    {
+        public string SceneName;
+        public string StateMachineName;
+        public List<BaselineEntry> Entries = new List<BaselineEntry>();
+    }
+
     private static TutorialStateTimer s_Instance;
 
     private readonly Dictionary<State, StateTimingEntry> m_ActiveEntries = new Dictionary<State, StateTimingEntry>();
     private readonly List<SessionSnapshot> m_Sessions = new List<SessionSnapshot>();
 
     private SessionSnapshot m_CurrentSession;
+    private BaselineSnapshot m_BaselineSnapshot;
+    private bool m_BaselineSavedForSession;
 
     public static TutorialStateTimer Instance => s_Instance;
     public IReadOnlyList<SessionSnapshot> Sessions => m_Sessions;
@@ -81,6 +104,8 @@ public class TutorialStateTimer : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
         }
+
+        LoadBaselineFromPrefs();
     }
 
     private void OnEnable()
@@ -156,39 +181,77 @@ public class TutorialStateTimer : MonoBehaviour
             return "No tutorial session recorded yet.";
         }
 
-        var actualOrder = new List<string>();
-        foreach (var entry in m_CurrentSession.Entries)
+        var baselineSession = GetBaselineSession();
+        if ((baselineSession == null || baselineSession.Entries.Count == 0) && (m_BaselineSnapshot == null || m_BaselineSnapshot.Entries.Count == 0))
         {
-            actualOrder.Add(entry.StateLabel);
+            return "No tutorial baseline available.";
         }
 
-        var missing = new List<string>();
-        var remainingActual = new List<string>(actualOrder);
-        var failed = new List<string>();
-        var progressParts = new List<string>();
-
-        foreach (var entry in m_CurrentSession.Entries)
+        var baselineTimes = new Dictionary<string, float>();
+        if (m_BaselineSnapshot != null && m_BaselineSnapshot.Entries.Count > 0)
         {
-            progressParts.Add($"{entry.StateLabel}: {(entry.CompletionProgress * 100f):0}%");
-
-            if (!entry.Succeeded)
+            foreach (var entry in m_BaselineSnapshot.Entries)
             {
-                failed.Add(entry.StateLabel);
+                if (!baselineTimes.ContainsKey(entry.StateLabel))
+                {
+                    baselineTimes[entry.StateLabel] = entry.Duration;
+                }
+            }
+        }
+        else if (baselineSession != null)
+        {
+            foreach (var entry in baselineSession.Entries)
+            {
+                if (!baselineTimes.ContainsKey(entry.StateLabel))
+                {
+                    baselineTimes[entry.StateLabel] = entry.Duration;
+                }
             }
         }
 
-        foreach (var expected in m_CurrentSession.ExpectedOrder)
+        if (m_CurrentSession.Entries.Count == 0)
         {
-            if (remainingActual.Contains(expected))
-            {
-                remainingActual.Remove(expected);
-                continue;
-            }
-
-            missing.Add(expected);
+            return "No steps recorded yet.";
         }
 
-        return $"Expected: {string.Join(" -> ", m_CurrentSession.ExpectedOrder)}\nActual: {string.Join(" -> ", actualOrder)}\nOrder: {(m_CurrentSession.IsInExpectedOrder() ? "yes" : "no")}\nFailed: {(failed.Count > 0 ? string.Join(", ", failed) : "none")}\nProgress: {(progressParts.Count > 0 ? string.Join(", ", progressParts) : "none")}\nMissing: {(missing.Count > 0 ? string.Join(", ", missing) : "none")}";
+        var builder = new StringBuilder();
+        builder.AppendLine("// COMPARACAO COM TUTORIAL //");
+
+        foreach (var entry in m_CurrentSession.Entries)
+        {
+            float current = entry.Duration;
+            if (baselineTimes.TryGetValue(entry.StateLabel, out float tutorial))
+            {
+                float diff = current - tutorial;
+                string diffText = diff >= 0f ? $"+{diff:0.00}s" : $"{diff:0.00}s";
+                builder.AppendLine($"{entry.StateLabel}: {current:0.00}s (tutorial {tutorial:0.00}s, {diffText})");
+            }
+            else
+            {
+                builder.AppendLine($"{entry.StateLabel}: {current:0.00}s (tutorial n/a)");
+            }
+        }
+
+        return builder.ToString().TrimEnd();
+    }
+
+    private SessionSnapshot GetBaselineSession()
+    {
+        if (m_Sessions == null || m_Sessions.Count < 2)
+        {
+            return null;
+        }
+
+        for (int i = m_Sessions.Count - 2; i >= 0; i--)
+        {
+            var session = m_Sessions[i];
+            if (session != null && session.Entries.Count > 0)
+            {
+                return session;
+            }
+        }
+
+        return null;
     }
 
     private void TryAutoBind()
@@ -265,6 +328,8 @@ public class TutorialStateTimer : MonoBehaviour
             StateMachineName = stateMachine != null ? stateMachine.name : "Unknown"
         };
 
+        m_BaselineSavedForSession = false;
+
         m_Sessions.Add(m_CurrentSession);
 
         if (stateMachine == null)
@@ -324,6 +389,12 @@ public class TutorialStateTimer : MonoBehaviour
         Debug.Log($"[TutorialStateTimer] State '{label}' completed in {entry.Duration:0.000}s. Success={entry.Succeeded}", this);
 
         m_ActiveEntries.Remove(state);
+
+        if (ShouldSaveBaseline() && !m_BaselineSavedForSession && m_StateMachine != null && m_StateMachine.IsFinished())
+        {
+            SaveBaselineFromCurrentSession();
+            m_BaselineSavedForSession = true;
+        }
     }
 
     private void HandleStateResolved(State state, bool succeeded)
@@ -347,5 +418,63 @@ public class TutorialStateTimer : MonoBehaviour
         }
 
         return string.IsNullOrWhiteSpace(state.StateLabel) ? state.name : state.StateLabel;
+    }
+
+    private bool ShouldSaveBaseline()
+    {
+        if (string.IsNullOrWhiteSpace(m_BaselineSceneName))
+        {
+            return true;
+        }
+
+        return string.Equals(SceneManager.GetActiveScene().name, m_BaselineSceneName, System.StringComparison.Ordinal);
+    }
+
+    private void SaveBaselineFromCurrentSession()
+    {
+        if (m_CurrentSession == null || m_CurrentSession.Entries.Count == 0)
+        {
+            return;
+        }
+
+        var snapshot = new BaselineSnapshot
+        {
+            SceneName = m_CurrentSession.SceneName,
+            StateMachineName = m_CurrentSession.StateMachineName
+        };
+
+        foreach (var entry in m_CurrentSession.Entries)
+        {
+            snapshot.Entries.Add(new BaselineEntry
+            {
+                StateLabel = entry.StateLabel,
+                Duration = entry.Duration
+            });
+        }
+
+        m_BaselineSnapshot = snapshot;
+        string json = JsonUtility.ToJson(snapshot);
+        PlayerPrefs.SetString(BaselinePrefsKey, json);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadBaselineFromPrefs()
+    {
+        if (!PlayerPrefs.HasKey(BaselinePrefsKey))
+        {
+            return;
+        }
+
+        string json = PlayerPrefs.GetString(BaselinePrefsKey, string.Empty);
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return;
+        }
+
+        var snapshot = JsonUtility.FromJson<BaselineSnapshot>(json);
+        if (snapshot != null && snapshot.Entries != null && snapshot.Entries.Count > 0)
+        {
+            m_BaselineSnapshot = snapshot;
+        }
     }
 }

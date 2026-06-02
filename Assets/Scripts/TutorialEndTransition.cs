@@ -554,7 +554,6 @@ public class TutorialEndTransition : MonoBehaviour
             builder.AppendLine($"Completados        : {resolvedCount} / {totalStates}");
             builder.AppendLine($"Com sucesso       : {successCount}");
             builder.AppendLine($"Falhados          : {failedCount}");
-            builder.AppendLine($"Ordem Esperada  : {(m_MainLevelMachine.ResolutionsWereInExpectedOrder ? "yes" : "no")}");
         }
         else
         {

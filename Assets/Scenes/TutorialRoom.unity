@@ -5060,8 +5060,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CPRCompressionState
   m_UseHighlight: 0
-  m_StateLabel: COMPRESSOES
-  m_SubtitlesText: Coloca as maos no centro do peito. Comprime 5-6 cm ao ritmo indicado.
+  m_StateLabel: "COMPRESS\xD5ES"
+  m_SubtitlesText: "Coloca as m\xE3os no centro do peito. Comprime 5-6 cm ao ritmo
+    indicado."
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
   successVolume: 0.2
@@ -8769,7 +8770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckConscience
   m_UseHighlight: 0
-  m_StateLabel: VERIFICAR CONSCIENCIA
+  m_StateLabel: "VERIFICAR CONSCI\xCANCIA"
   m_SubtitlesText: Agita os ombros do paciente e verifica se responde.
   playSuccessOnExit: 1
   successClip: {fileID: 8300000, guid: 41b9727bebc5aa54b90a38ad9bc11800, type: 3}
@@ -14186,7 +14187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadTiltBreathingState
   m_UseHighlight: 0
-  m_StateLabel: VERIFICAR RESPIRACAO
+  m_StateLabel: "VERIFICAR RESPIRA\xC7\xC3O"
   m_SubtitlesText: "Chega a tua cabe\xE7a perto da do paciente para verificar se
     ele est\xE1 a respirar"
   playSuccessOnExit: 1

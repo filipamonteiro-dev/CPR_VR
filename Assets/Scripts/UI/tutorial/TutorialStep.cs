@@ -79,7 +79,7 @@ public static class TutorialStepsCatalog
         new TutorialStep
         {
             id = 3,
-            label = "VERIFICAR CONSCIENCIA",
+            label = "VERIFICAR CONSCIÊNCIA",
             title = "AGITE OS OMBROS DO PACIENTE",
             instruction = "Pegue em um dos ombros do paciente e abane-o.",
             highlight = HighlightMode.None,
@@ -111,22 +111,22 @@ public static class TutorialStepsCatalog
             id = 5,
             label = "RESPIRAÇÃO",
             title = "VERIFICAR RESPIRAÇÃO",
-            instruction = "Incline a cabeca do paciente para trás e verifique se o paciente respira.",
+            instruction = "Chegue a cabeça perto da do paciente e ouça se o paciente respira.",
             highlight = HighlightMode.Chest,
             showArrow = false,
             showHandPlacement = false,
             annotations = new[]
             {
-                new Annotation { xNorm = 0.16f, yNorm = 0.42f, text = "PEGUE NO QUEIXO", dir = AnnotationDir.Right },
-                new Annotation { xNorm = 0.70f, yNorm = 0.42f, text = "PRESSIONE O GRIP DO COMANDO", dir = AnnotationDir.Left }
+                new Annotation { xNorm = 0.16f, yNorm = 0.42f, text = "CHEGUE A CABEÇA PERTO", dir = AnnotationDir.Right },
+                new Annotation { xNorm = 0.70f, yNorm = 0.42f, text = "OUÇA", dir = AnnotationDir.Left }
             }
         },
        
         new TutorialStep
         {
             id = 6,
-            label = "COMPRESSOES",
-            title = "INICIAR COMPRESSOES",
+            label = "COMPRESÕES",
+            title = "INICIAR COMPRESSÕES",
             instruction = "Posicione o comando por cima do torax do paciente até ele ficar preso e realize 30 compressões.",
             highlight = HighlightMode.Chest,
             showArrow = true,
